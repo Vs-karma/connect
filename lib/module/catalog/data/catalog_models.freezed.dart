@@ -299,7 +299,7 @@ as DateTime?,
 /// @nodoc
 mixin _$Product {
 
- String get id; String get name; String? get description; double? get price; String get currency; String get availability; String? get sku; String get status; List<String> get imageUrls; DateTime? get createdAt;
+ String get id; String get name; String? get description; double? get price; String get currency; String get availability; String? get sku; String get status; List<String> get imageUrls; List<String> get collectionIds; DateTime? get createdAt;
 /// Create a copy of Product
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -312,16 +312,16 @@ $ProductCopyWith<Product> get copyWith => _$ProductCopyWithImpl<Product>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Product&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.price, price) || other.price == price)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.availability, availability) || other.availability == availability)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.imageUrls, imageUrls)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Product&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.price, price) || other.price == price)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.availability, availability) || other.availability == availability)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.imageUrls, imageUrls)&&const DeepCollectionEquality().equals(other.collectionIds, collectionIds)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,price,currency,availability,sku,status,const DeepCollectionEquality().hash(imageUrls),createdAt);
+int get hashCode => Object.hash(runtimeType,id,name,description,price,currency,availability,sku,status,const DeepCollectionEquality().hash(imageUrls),const DeepCollectionEquality().hash(collectionIds),createdAt);
 
 @override
 String toString() {
-  return 'Product(id: $id, name: $name, description: $description, price: $price, currency: $currency, availability: $availability, sku: $sku, status: $status, imageUrls: $imageUrls, createdAt: $createdAt)';
+  return 'Product(id: $id, name: $name, description: $description, price: $price, currency: $currency, availability: $availability, sku: $sku, status: $status, imageUrls: $imageUrls, collectionIds: $collectionIds, createdAt: $createdAt)';
 }
 
 
@@ -332,7 +332,7 @@ abstract mixin class $ProductCopyWith<$Res>  {
   factory $ProductCopyWith(Product value, $Res Function(Product) _then) = _$ProductCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String? description, double? price, String currency, String availability, String? sku, String status, List<String> imageUrls, DateTime? createdAt
+ String id, String name, String? description, double? price, String currency, String availability, String? sku, String status, List<String> imageUrls, List<String> collectionIds, DateTime? createdAt
 });
 
 
@@ -349,7 +349,7 @@ class _$ProductCopyWithImpl<$Res>
 
 /// Create a copy of Product
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? description = freezed,Object? price = freezed,Object? currency = null,Object? availability = null,Object? sku = freezed,Object? status = null,Object? imageUrls = null,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? description = freezed,Object? price = freezed,Object? currency = null,Object? availability = null,Object? sku = freezed,Object? status = null,Object? imageUrls = null,Object? collectionIds = null,Object? createdAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -360,6 +360,7 @@ as String,availability: null == availability ? _self.availability : availability
 as String,sku: freezed == sku ? _self.sku : sku // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,imageUrls: null == imageUrls ? _self.imageUrls : imageUrls // ignore: cast_nullable_to_non_nullable
+as List<String>,collectionIds: null == collectionIds ? _self.collectionIds : collectionIds // ignore: cast_nullable_to_non_nullable
 as List<String>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
@@ -446,10 +447,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String? description,  double? price,  String currency,  String availability,  String? sku,  String status,  List<String> imageUrls,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String? description,  double? price,  String currency,  String availability,  String? sku,  String status,  List<String> imageUrls,  List<String> collectionIds,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Product() when $default != null:
-return $default(_that.id,_that.name,_that.description,_that.price,_that.currency,_that.availability,_that.sku,_that.status,_that.imageUrls,_that.createdAt);case _:
+return $default(_that.id,_that.name,_that.description,_that.price,_that.currency,_that.availability,_that.sku,_that.status,_that.imageUrls,_that.collectionIds,_that.createdAt);case _:
   return orElse();
 
 }
@@ -467,10 +468,10 @@ return $default(_that.id,_that.name,_that.description,_that.price,_that.currency
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String? description,  double? price,  String currency,  String availability,  String? sku,  String status,  List<String> imageUrls,  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String? description,  double? price,  String currency,  String availability,  String? sku,  String status,  List<String> imageUrls,  List<String> collectionIds,  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _Product():
-return $default(_that.id,_that.name,_that.description,_that.price,_that.currency,_that.availability,_that.sku,_that.status,_that.imageUrls,_that.createdAt);case _:
+return $default(_that.id,_that.name,_that.description,_that.price,_that.currency,_that.availability,_that.sku,_that.status,_that.imageUrls,_that.collectionIds,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -487,10 +488,10 @@ return $default(_that.id,_that.name,_that.description,_that.price,_that.currency
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String? description,  double? price,  String currency,  String availability,  String? sku,  String status,  List<String> imageUrls,  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String? description,  double? price,  String currency,  String availability,  String? sku,  String status,  List<String> imageUrls,  List<String> collectionIds,  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Product() when $default != null:
-return $default(_that.id,_that.name,_that.description,_that.price,_that.currency,_that.availability,_that.sku,_that.status,_that.imageUrls,_that.createdAt);case _:
+return $default(_that.id,_that.name,_that.description,_that.price,_that.currency,_that.availability,_that.sku,_that.status,_that.imageUrls,_that.collectionIds,_that.createdAt);case _:
   return null;
 
 }
@@ -502,7 +503,7 @@ return $default(_that.id,_that.name,_that.description,_that.price,_that.currency
 @JsonSerializable()
 
 class _Product implements Product {
-  const _Product({required this.id, required this.name, this.description, this.price, this.currency = 'INR', this.availability = 'IN_STOCK', this.sku, this.status = 'ACTIVE', final  List<String> imageUrls = const <String>[], this.createdAt}): _imageUrls = imageUrls;
+  const _Product({required this.id, required this.name, this.description, this.price, this.currency = 'INR', this.availability = 'IN_STOCK', this.sku, this.status = 'ACTIVE', final  List<String> imageUrls = const <String>[], final  List<String> collectionIds = const <String>[], this.createdAt}): _imageUrls = imageUrls,_collectionIds = collectionIds;
   factory _Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
 
 @override final  String id;
@@ -520,6 +521,13 @@ class _Product implements Product {
   return EqualUnmodifiableListView(_imageUrls);
 }
 
+ final  List<String> _collectionIds;
+@override@JsonKey() List<String> get collectionIds {
+  if (_collectionIds is EqualUnmodifiableListView) return _collectionIds;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_collectionIds);
+}
+
 @override final  DateTime? createdAt;
 
 /// Create a copy of Product
@@ -535,16 +543,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Product&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.price, price) || other.price == price)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.availability, availability) || other.availability == availability)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._imageUrls, _imageUrls)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Product&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&(identical(other.price, price) || other.price == price)&&(identical(other.currency, currency) || other.currency == currency)&&(identical(other.availability, availability) || other.availability == availability)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._imageUrls, _imageUrls)&&const DeepCollectionEquality().equals(other._collectionIds, _collectionIds)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,price,currency,availability,sku,status,const DeepCollectionEquality().hash(_imageUrls),createdAt);
+int get hashCode => Object.hash(runtimeType,id,name,description,price,currency,availability,sku,status,const DeepCollectionEquality().hash(_imageUrls),const DeepCollectionEquality().hash(_collectionIds),createdAt);
 
 @override
 String toString() {
-  return 'Product(id: $id, name: $name, description: $description, price: $price, currency: $currency, availability: $availability, sku: $sku, status: $status, imageUrls: $imageUrls, createdAt: $createdAt)';
+  return 'Product(id: $id, name: $name, description: $description, price: $price, currency: $currency, availability: $availability, sku: $sku, status: $status, imageUrls: $imageUrls, collectionIds: $collectionIds, createdAt: $createdAt)';
 }
 
 
@@ -555,7 +563,7 @@ abstract mixin class _$ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   factory _$ProductCopyWith(_Product value, $Res Function(_Product) _then) = __$ProductCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String? description, double? price, String currency, String availability, String? sku, String status, List<String> imageUrls, DateTime? createdAt
+ String id, String name, String? description, double? price, String currency, String availability, String? sku, String status, List<String> imageUrls, List<String> collectionIds, DateTime? createdAt
 });
 
 
@@ -572,7 +580,7 @@ class __$ProductCopyWithImpl<$Res>
 
 /// Create a copy of Product
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? description = freezed,Object? price = freezed,Object? currency = null,Object? availability = null,Object? sku = freezed,Object? status = null,Object? imageUrls = null,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? description = freezed,Object? price = freezed,Object? currency = null,Object? availability = null,Object? sku = freezed,Object? status = null,Object? imageUrls = null,Object? collectionIds = null,Object? createdAt = freezed,}) {
   return _then(_Product(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -583,8 +591,556 @@ as String,availability: null == availability ? _self.availability : availability
 as String,sku: freezed == sku ? _self.sku : sku // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,imageUrls: null == imageUrls ? _self._imageUrls : imageUrls // ignore: cast_nullable_to_non_nullable
+as List<String>,collectionIds: null == collectionIds ? _self._collectionIds : collectionIds // ignore: cast_nullable_to_non_nullable
 as List<String>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$Collection {
+
+ String get id; String get name; String? get coverUrl; int get sortOrder; int get productCount;
+/// Create a copy of Collection
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CollectionCopyWith<Collection> get copyWith => _$CollectionCopyWithImpl<Collection>(this as Collection, _$identity);
+
+  /// Serializes this Collection to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Collection&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.coverUrl, coverUrl) || other.coverUrl == coverUrl)&&(identical(other.sortOrder, sortOrder) || other.sortOrder == sortOrder)&&(identical(other.productCount, productCount) || other.productCount == productCount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,coverUrl,sortOrder,productCount);
+
+@override
+String toString() {
+  return 'Collection(id: $id, name: $name, coverUrl: $coverUrl, sortOrder: $sortOrder, productCount: $productCount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CollectionCopyWith<$Res>  {
+  factory $CollectionCopyWith(Collection value, $Res Function(Collection) _then) = _$CollectionCopyWithImpl;
+@useResult
+$Res call({
+ String id, String name, String? coverUrl, int sortOrder, int productCount
+});
+
+
+
+
+}
+/// @nodoc
+class _$CollectionCopyWithImpl<$Res>
+    implements $CollectionCopyWith<$Res> {
+  _$CollectionCopyWithImpl(this._self, this._then);
+
+  final Collection _self;
+  final $Res Function(Collection) _then;
+
+/// Create a copy of Collection
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? coverUrl = freezed,Object? sortOrder = null,Object? productCount = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,coverUrl: freezed == coverUrl ? _self.coverUrl : coverUrl // ignore: cast_nullable_to_non_nullable
+as String?,sortOrder: null == sortOrder ? _self.sortOrder : sortOrder // ignore: cast_nullable_to_non_nullable
+as int,productCount: null == productCount ? _self.productCount : productCount // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [Collection].
+extension CollectionPatterns on Collection {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Collection value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _Collection() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Collection value)  $default,){
+final _that = this;
+switch (_that) {
+case _Collection():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Collection value)?  $default,){
+final _that = this;
+switch (_that) {
+case _Collection() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String? coverUrl,  int sortOrder,  int productCount)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _Collection() when $default != null:
+return $default(_that.id,_that.name,_that.coverUrl,_that.sortOrder,_that.productCount);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String? coverUrl,  int sortOrder,  int productCount)  $default,) {final _that = this;
+switch (_that) {
+case _Collection():
+return $default(_that.id,_that.name,_that.coverUrl,_that.sortOrder,_that.productCount);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String? coverUrl,  int sortOrder,  int productCount)?  $default,) {final _that = this;
+switch (_that) {
+case _Collection() when $default != null:
+return $default(_that.id,_that.name,_that.coverUrl,_that.sortOrder,_that.productCount);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _Collection implements Collection {
+  const _Collection({required this.id, required this.name, this.coverUrl, this.sortOrder = 0, this.productCount = 0});
+  factory _Collection.fromJson(Map<String, dynamic> json) => _$CollectionFromJson(json);
+
+@override final  String id;
+@override final  String name;
+@override final  String? coverUrl;
+@override@JsonKey() final  int sortOrder;
+@override@JsonKey() final  int productCount;
+
+/// Create a copy of Collection
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CollectionCopyWith<_Collection> get copyWith => __$CollectionCopyWithImpl<_Collection>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CollectionToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Collection&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.coverUrl, coverUrl) || other.coverUrl == coverUrl)&&(identical(other.sortOrder, sortOrder) || other.sortOrder == sortOrder)&&(identical(other.productCount, productCount) || other.productCount == productCount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,coverUrl,sortOrder,productCount);
+
+@override
+String toString() {
+  return 'Collection(id: $id, name: $name, coverUrl: $coverUrl, sortOrder: $sortOrder, productCount: $productCount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CollectionCopyWith<$Res> implements $CollectionCopyWith<$Res> {
+  factory _$CollectionCopyWith(_Collection value, $Res Function(_Collection) _then) = __$CollectionCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String name, String? coverUrl, int sortOrder, int productCount
+});
+
+
+
+
+}
+/// @nodoc
+class __$CollectionCopyWithImpl<$Res>
+    implements _$CollectionCopyWith<$Res> {
+  __$CollectionCopyWithImpl(this._self, this._then);
+
+  final _Collection _self;
+  final $Res Function(_Collection) _then;
+
+/// Create a copy of Collection
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? coverUrl = freezed,Object? sortOrder = null,Object? productCount = null,}) {
+  return _then(_Collection(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,coverUrl: freezed == coverUrl ? _self.coverUrl : coverUrl // ignore: cast_nullable_to_non_nullable
+as String?,sortOrder: null == sortOrder ? _self.sortOrder : sortOrder // ignore: cast_nullable_to_non_nullable
+as int,productCount: null == productCount ? _self.productCount : productCount // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$PublicCollection {
+
+ String get id; String get name; String? get coverUrl; int get productCount;
+/// Create a copy of PublicCollection
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PublicCollectionCopyWith<PublicCollection> get copyWith => _$PublicCollectionCopyWithImpl<PublicCollection>(this as PublicCollection, _$identity);
+
+  /// Serializes this PublicCollection to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PublicCollection&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.coverUrl, coverUrl) || other.coverUrl == coverUrl)&&(identical(other.productCount, productCount) || other.productCount == productCount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,coverUrl,productCount);
+
+@override
+String toString() {
+  return 'PublicCollection(id: $id, name: $name, coverUrl: $coverUrl, productCount: $productCount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PublicCollectionCopyWith<$Res>  {
+  factory $PublicCollectionCopyWith(PublicCollection value, $Res Function(PublicCollection) _then) = _$PublicCollectionCopyWithImpl;
+@useResult
+$Res call({
+ String id, String name, String? coverUrl, int productCount
+});
+
+
+
+
+}
+/// @nodoc
+class _$PublicCollectionCopyWithImpl<$Res>
+    implements $PublicCollectionCopyWith<$Res> {
+  _$PublicCollectionCopyWithImpl(this._self, this._then);
+
+  final PublicCollection _self;
+  final $Res Function(PublicCollection) _then;
+
+/// Create a copy of PublicCollection
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? coverUrl = freezed,Object? productCount = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,coverUrl: freezed == coverUrl ? _self.coverUrl : coverUrl // ignore: cast_nullable_to_non_nullable
+as String?,productCount: null == productCount ? _self.productCount : productCount // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [PublicCollection].
+extension PublicCollectionPatterns on PublicCollection {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _PublicCollection value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _PublicCollection() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _PublicCollection value)  $default,){
+final _that = this;
+switch (_that) {
+case _PublicCollection():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _PublicCollection value)?  $default,){
+final _that = this;
+switch (_that) {
+case _PublicCollection() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String? coverUrl,  int productCount)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _PublicCollection() when $default != null:
+return $default(_that.id,_that.name,_that.coverUrl,_that.productCount);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String? coverUrl,  int productCount)  $default,) {final _that = this;
+switch (_that) {
+case _PublicCollection():
+return $default(_that.id,_that.name,_that.coverUrl,_that.productCount);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String? coverUrl,  int productCount)?  $default,) {final _that = this;
+switch (_that) {
+case _PublicCollection() when $default != null:
+return $default(_that.id,_that.name,_that.coverUrl,_that.productCount);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _PublicCollection implements PublicCollection {
+  const _PublicCollection({required this.id, required this.name, this.coverUrl, this.productCount = 0});
+  factory _PublicCollection.fromJson(Map<String, dynamic> json) => _$PublicCollectionFromJson(json);
+
+@override final  String id;
+@override final  String name;
+@override final  String? coverUrl;
+@override@JsonKey() final  int productCount;
+
+/// Create a copy of PublicCollection
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PublicCollectionCopyWith<_PublicCollection> get copyWith => __$PublicCollectionCopyWithImpl<_PublicCollection>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PublicCollectionToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PublicCollection&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.coverUrl, coverUrl) || other.coverUrl == coverUrl)&&(identical(other.productCount, productCount) || other.productCount == productCount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,coverUrl,productCount);
+
+@override
+String toString() {
+  return 'PublicCollection(id: $id, name: $name, coverUrl: $coverUrl, productCount: $productCount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$PublicCollectionCopyWith<$Res> implements $PublicCollectionCopyWith<$Res> {
+  factory _$PublicCollectionCopyWith(_PublicCollection value, $Res Function(_PublicCollection) _then) = __$PublicCollectionCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String name, String? coverUrl, int productCount
+});
+
+
+
+
+}
+/// @nodoc
+class __$PublicCollectionCopyWithImpl<$Res>
+    implements _$PublicCollectionCopyWith<$Res> {
+  __$PublicCollectionCopyWithImpl(this._self, this._then);
+
+  final _PublicCollection _self;
+  final $Res Function(_PublicCollection) _then;
+
+/// Create a copy of PublicCollection
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? coverUrl = freezed,Object? productCount = null,}) {
+  return _then(_PublicCollection(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,coverUrl: freezed == coverUrl ? _self.coverUrl : coverUrl // ignore: cast_nullable_to_non_nullable
+as String?,productCount: null == productCount ? _self.productCount : productCount // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -876,7 +1432,7 @@ as int,
 /// @nodoc
 mixin _$PublicStore {
 
- String get id; String get name; String get category; String? get tagline; String? get logoUrl; int get productCount; String get ownerUserId; String? get ownerName;
+ String get id; String get name; String get category; String? get tagline; String? get logoUrl; String? get coverImageUrl; int get productCount; String get ownerUserId; String? get ownerName;
 /// Create a copy of PublicStore
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -889,16 +1445,16 @@ $PublicStoreCopyWith<PublicStore> get copyWith => _$PublicStoreCopyWithImpl<Publ
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PublicStore&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.tagline, tagline) || other.tagline == tagline)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.productCount, productCount) || other.productCount == productCount)&&(identical(other.ownerUserId, ownerUserId) || other.ownerUserId == ownerUserId)&&(identical(other.ownerName, ownerName) || other.ownerName == ownerName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PublicStore&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.tagline, tagline) || other.tagline == tagline)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.coverImageUrl, coverImageUrl) || other.coverImageUrl == coverImageUrl)&&(identical(other.productCount, productCount) || other.productCount == productCount)&&(identical(other.ownerUserId, ownerUserId) || other.ownerUserId == ownerUserId)&&(identical(other.ownerName, ownerName) || other.ownerName == ownerName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,category,tagline,logoUrl,productCount,ownerUserId,ownerName);
+int get hashCode => Object.hash(runtimeType,id,name,category,tagline,logoUrl,coverImageUrl,productCount,ownerUserId,ownerName);
 
 @override
 String toString() {
-  return 'PublicStore(id: $id, name: $name, category: $category, tagline: $tagline, logoUrl: $logoUrl, productCount: $productCount, ownerUserId: $ownerUserId, ownerName: $ownerName)';
+  return 'PublicStore(id: $id, name: $name, category: $category, tagline: $tagline, logoUrl: $logoUrl, coverImageUrl: $coverImageUrl, productCount: $productCount, ownerUserId: $ownerUserId, ownerName: $ownerName)';
 }
 
 
@@ -909,7 +1465,7 @@ abstract mixin class $PublicStoreCopyWith<$Res>  {
   factory $PublicStoreCopyWith(PublicStore value, $Res Function(PublicStore) _then) = _$PublicStoreCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String category, String? tagline, String? logoUrl, int productCount, String ownerUserId, String? ownerName
+ String id, String name, String category, String? tagline, String? logoUrl, String? coverImageUrl, int productCount, String ownerUserId, String? ownerName
 });
 
 
@@ -926,13 +1482,14 @@ class _$PublicStoreCopyWithImpl<$Res>
 
 /// Create a copy of PublicStore
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? category = null,Object? tagline = freezed,Object? logoUrl = freezed,Object? productCount = null,Object? ownerUserId = null,Object? ownerName = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? category = null,Object? tagline = freezed,Object? logoUrl = freezed,Object? coverImageUrl = freezed,Object? productCount = null,Object? ownerUserId = null,Object? ownerName = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as String,tagline: freezed == tagline ? _self.tagline : tagline // ignore: cast_nullable_to_non_nullable
 as String?,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
+as String?,coverImageUrl: freezed == coverImageUrl ? _self.coverImageUrl : coverImageUrl // ignore: cast_nullable_to_non_nullable
 as String?,productCount: null == productCount ? _self.productCount : productCount // ignore: cast_nullable_to_non_nullable
 as int,ownerUserId: null == ownerUserId ? _self.ownerUserId : ownerUserId // ignore: cast_nullable_to_non_nullable
 as String,ownerName: freezed == ownerName ? _self.ownerName : ownerName // ignore: cast_nullable_to_non_nullable
@@ -1021,10 +1578,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String category,  String? tagline,  String? logoUrl,  int productCount,  String ownerUserId,  String? ownerName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String category,  String? tagline,  String? logoUrl,  String? coverImageUrl,  int productCount,  String ownerUserId,  String? ownerName)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PublicStore() when $default != null:
-return $default(_that.id,_that.name,_that.category,_that.tagline,_that.logoUrl,_that.productCount,_that.ownerUserId,_that.ownerName);case _:
+return $default(_that.id,_that.name,_that.category,_that.tagline,_that.logoUrl,_that.coverImageUrl,_that.productCount,_that.ownerUserId,_that.ownerName);case _:
   return orElse();
 
 }
@@ -1042,10 +1599,10 @@ return $default(_that.id,_that.name,_that.category,_that.tagline,_that.logoUrl,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String category,  String? tagline,  String? logoUrl,  int productCount,  String ownerUserId,  String? ownerName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String category,  String? tagline,  String? logoUrl,  String? coverImageUrl,  int productCount,  String ownerUserId,  String? ownerName)  $default,) {final _that = this;
 switch (_that) {
 case _PublicStore():
-return $default(_that.id,_that.name,_that.category,_that.tagline,_that.logoUrl,_that.productCount,_that.ownerUserId,_that.ownerName);case _:
+return $default(_that.id,_that.name,_that.category,_that.tagline,_that.logoUrl,_that.coverImageUrl,_that.productCount,_that.ownerUserId,_that.ownerName);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1062,10 +1619,10 @@ return $default(_that.id,_that.name,_that.category,_that.tagline,_that.logoUrl,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String category,  String? tagline,  String? logoUrl,  int productCount,  String ownerUserId,  String? ownerName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String category,  String? tagline,  String? logoUrl,  String? coverImageUrl,  int productCount,  String ownerUserId,  String? ownerName)?  $default,) {final _that = this;
 switch (_that) {
 case _PublicStore() when $default != null:
-return $default(_that.id,_that.name,_that.category,_that.tagline,_that.logoUrl,_that.productCount,_that.ownerUserId,_that.ownerName);case _:
+return $default(_that.id,_that.name,_that.category,_that.tagline,_that.logoUrl,_that.coverImageUrl,_that.productCount,_that.ownerUserId,_that.ownerName);case _:
   return null;
 
 }
@@ -1077,7 +1634,7 @@ return $default(_that.id,_that.name,_that.category,_that.tagline,_that.logoUrl,_
 @JsonSerializable()
 
 class _PublicStore implements PublicStore {
-  const _PublicStore({required this.id, required this.name, required this.category, this.tagline, this.logoUrl, this.productCount = 0, required this.ownerUserId, this.ownerName});
+  const _PublicStore({required this.id, required this.name, required this.category, this.tagline, this.logoUrl, this.coverImageUrl, this.productCount = 0, required this.ownerUserId, this.ownerName});
   factory _PublicStore.fromJson(Map<String, dynamic> json) => _$PublicStoreFromJson(json);
 
 @override final  String id;
@@ -1085,6 +1642,7 @@ class _PublicStore implements PublicStore {
 @override final  String category;
 @override final  String? tagline;
 @override final  String? logoUrl;
+@override final  String? coverImageUrl;
 @override@JsonKey() final  int productCount;
 @override final  String ownerUserId;
 @override final  String? ownerName;
@@ -1102,16 +1660,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PublicStore&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.tagline, tagline) || other.tagline == tagline)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.productCount, productCount) || other.productCount == productCount)&&(identical(other.ownerUserId, ownerUserId) || other.ownerUserId == ownerUserId)&&(identical(other.ownerName, ownerName) || other.ownerName == ownerName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PublicStore&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.tagline, tagline) || other.tagline == tagline)&&(identical(other.logoUrl, logoUrl) || other.logoUrl == logoUrl)&&(identical(other.coverImageUrl, coverImageUrl) || other.coverImageUrl == coverImageUrl)&&(identical(other.productCount, productCount) || other.productCount == productCount)&&(identical(other.ownerUserId, ownerUserId) || other.ownerUserId == ownerUserId)&&(identical(other.ownerName, ownerName) || other.ownerName == ownerName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,category,tagline,logoUrl,productCount,ownerUserId,ownerName);
+int get hashCode => Object.hash(runtimeType,id,name,category,tagline,logoUrl,coverImageUrl,productCount,ownerUserId,ownerName);
 
 @override
 String toString() {
-  return 'PublicStore(id: $id, name: $name, category: $category, tagline: $tagline, logoUrl: $logoUrl, productCount: $productCount, ownerUserId: $ownerUserId, ownerName: $ownerName)';
+  return 'PublicStore(id: $id, name: $name, category: $category, tagline: $tagline, logoUrl: $logoUrl, coverImageUrl: $coverImageUrl, productCount: $productCount, ownerUserId: $ownerUserId, ownerName: $ownerName)';
 }
 
 
@@ -1122,7 +1680,7 @@ abstract mixin class _$PublicStoreCopyWith<$Res> implements $PublicStoreCopyWith
   factory _$PublicStoreCopyWith(_PublicStore value, $Res Function(_PublicStore) _then) = __$PublicStoreCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String category, String? tagline, String? logoUrl, int productCount, String ownerUserId, String? ownerName
+ String id, String name, String category, String? tagline, String? logoUrl, String? coverImageUrl, int productCount, String ownerUserId, String? ownerName
 });
 
 
@@ -1139,17 +1697,299 @@ class __$PublicStoreCopyWithImpl<$Res>
 
 /// Create a copy of PublicStore
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? category = null,Object? tagline = freezed,Object? logoUrl = freezed,Object? productCount = null,Object? ownerUserId = null,Object? ownerName = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? category = null,Object? tagline = freezed,Object? logoUrl = freezed,Object? coverImageUrl = freezed,Object? productCount = null,Object? ownerUserId = null,Object? ownerName = freezed,}) {
   return _then(_PublicStore(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as String,tagline: freezed == tagline ? _self.tagline : tagline // ignore: cast_nullable_to_non_nullable
 as String?,logoUrl: freezed == logoUrl ? _self.logoUrl : logoUrl // ignore: cast_nullable_to_non_nullable
+as String?,coverImageUrl: freezed == coverImageUrl ? _self.coverImageUrl : coverImageUrl // ignore: cast_nullable_to_non_nullable
 as String?,productCount: null == productCount ? _self.productCount : productCount // ignore: cast_nullable_to_non_nullable
 as int,ownerUserId: null == ownerUserId ? _self.ownerUserId : ownerUserId // ignore: cast_nullable_to_non_nullable
 as String,ownerName: freezed == ownerName ? _self.ownerName : ownerName // ignore: cast_nullable_to_non_nullable
 as String?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$PublicStorePage {
+
+ List<PublicStore> get content; int get page; int get size; int get totalElements; int get totalPages;
+/// Create a copy of PublicStorePage
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PublicStorePageCopyWith<PublicStorePage> get copyWith => _$PublicStorePageCopyWithImpl<PublicStorePage>(this as PublicStorePage, _$identity);
+
+  /// Serializes this PublicStorePage to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PublicStorePage&&const DeepCollectionEquality().equals(other.content, content)&&(identical(other.page, page) || other.page == page)&&(identical(other.size, size) || other.size == size)&&(identical(other.totalElements, totalElements) || other.totalElements == totalElements)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(content),page,size,totalElements,totalPages);
+
+@override
+String toString() {
+  return 'PublicStorePage(content: $content, page: $page, size: $size, totalElements: $totalElements, totalPages: $totalPages)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PublicStorePageCopyWith<$Res>  {
+  factory $PublicStorePageCopyWith(PublicStorePage value, $Res Function(PublicStorePage) _then) = _$PublicStorePageCopyWithImpl;
+@useResult
+$Res call({
+ List<PublicStore> content, int page, int size, int totalElements, int totalPages
+});
+
+
+
+
+}
+/// @nodoc
+class _$PublicStorePageCopyWithImpl<$Res>
+    implements $PublicStorePageCopyWith<$Res> {
+  _$PublicStorePageCopyWithImpl(this._self, this._then);
+
+  final PublicStorePage _self;
+  final $Res Function(PublicStorePage) _then;
+
+/// Create a copy of PublicStorePage
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? content = null,Object? page = null,Object? size = null,Object? totalElements = null,Object? totalPages = null,}) {
+  return _then(_self.copyWith(
+content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as List<PublicStore>,page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as int,size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
+as int,totalElements: null == totalElements ? _self.totalElements : totalElements // ignore: cast_nullable_to_non_nullable
+as int,totalPages: null == totalPages ? _self.totalPages : totalPages // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [PublicStorePage].
+extension PublicStorePagePatterns on PublicStorePage {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _PublicStorePage value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _PublicStorePage() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _PublicStorePage value)  $default,){
+final _that = this;
+switch (_that) {
+case _PublicStorePage():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _PublicStorePage value)?  $default,){
+final _that = this;
+switch (_that) {
+case _PublicStorePage() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PublicStore> content,  int page,  int size,  int totalElements,  int totalPages)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _PublicStorePage() when $default != null:
+return $default(_that.content,_that.page,_that.size,_that.totalElements,_that.totalPages);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PublicStore> content,  int page,  int size,  int totalElements,  int totalPages)  $default,) {final _that = this;
+switch (_that) {
+case _PublicStorePage():
+return $default(_that.content,_that.page,_that.size,_that.totalElements,_that.totalPages);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PublicStore> content,  int page,  int size,  int totalElements,  int totalPages)?  $default,) {final _that = this;
+switch (_that) {
+case _PublicStorePage() when $default != null:
+return $default(_that.content,_that.page,_that.size,_that.totalElements,_that.totalPages);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _PublicStorePage implements PublicStorePage {
+  const _PublicStorePage({final  List<PublicStore> content = const <PublicStore>[], this.page = 0, this.size = 0, this.totalElements = 0, this.totalPages = 0}): _content = content;
+  factory _PublicStorePage.fromJson(Map<String, dynamic> json) => _$PublicStorePageFromJson(json);
+
+ final  List<PublicStore> _content;
+@override@JsonKey() List<PublicStore> get content {
+  if (_content is EqualUnmodifiableListView) return _content;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_content);
+}
+
+@override@JsonKey() final  int page;
+@override@JsonKey() final  int size;
+@override@JsonKey() final  int totalElements;
+@override@JsonKey() final  int totalPages;
+
+/// Create a copy of PublicStorePage
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PublicStorePageCopyWith<_PublicStorePage> get copyWith => __$PublicStorePageCopyWithImpl<_PublicStorePage>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PublicStorePageToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PublicStorePage&&const DeepCollectionEquality().equals(other._content, _content)&&(identical(other.page, page) || other.page == page)&&(identical(other.size, size) || other.size == size)&&(identical(other.totalElements, totalElements) || other.totalElements == totalElements)&&(identical(other.totalPages, totalPages) || other.totalPages == totalPages));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_content),page,size,totalElements,totalPages);
+
+@override
+String toString() {
+  return 'PublicStorePage(content: $content, page: $page, size: $size, totalElements: $totalElements, totalPages: $totalPages)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$PublicStorePageCopyWith<$Res> implements $PublicStorePageCopyWith<$Res> {
+  factory _$PublicStorePageCopyWith(_PublicStorePage value, $Res Function(_PublicStorePage) _then) = __$PublicStorePageCopyWithImpl;
+@override @useResult
+$Res call({
+ List<PublicStore> content, int page, int size, int totalElements, int totalPages
+});
+
+
+
+
+}
+/// @nodoc
+class __$PublicStorePageCopyWithImpl<$Res>
+    implements _$PublicStorePageCopyWith<$Res> {
+  __$PublicStorePageCopyWithImpl(this._self, this._then);
+
+  final _PublicStorePage _self;
+  final $Res Function(_PublicStorePage) _then;
+
+/// Create a copy of PublicStorePage
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? content = null,Object? page = null,Object? size = null,Object? totalElements = null,Object? totalPages = null,}) {
+  return _then(_PublicStorePage(
+content: null == content ? _self._content : content // ignore: cast_nullable_to_non_nullable
+as List<PublicStore>,page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as int,size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
+as int,totalElements: null == totalElements ? _self.totalElements : totalElements // ignore: cast_nullable_to_non_nullable
+as int,totalPages: null == totalPages ? _self.totalPages : totalPages // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

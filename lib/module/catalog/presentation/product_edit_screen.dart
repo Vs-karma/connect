@@ -43,6 +43,7 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
   late final TextEditingController _description;
   bool _inStock = true;
   final List<_Img> _images = [];
+  final Set<String> _selectedCollections = {};
   bool _saving = false;
 
   bool get _isEdit => widget.existing != null;
@@ -55,7 +56,10 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
     _price = TextEditingController(text: p?.price == null ? '' : _trimZeros(p!.price!));
     _description = TextEditingController(text: p?.description ?? '');
     _inStock = (p?.availability ?? 'IN_STOCK') == 'IN_STOCK';
-    if (p != null) _images.addAll(p.imageUrls.map((u) => _Img.url(u)));
+    if (p != null) {
+      _images.addAll(p.imageUrls.map((u) => _Img.url(u)));
+      _selectedCollections.addAll(p.collectionIds);
+    }
   }
 
   static String _trimZeros(double v) =>
@@ -101,6 +105,7 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
           price: price,
           availability: availability,
           imageUrls: urls,
+          collectionIds: _selectedCollections.toList(),
         );
       } else {
         await repo.addProduct(
@@ -109,6 +114,7 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
           price: price,
           availability: availability,
           imageUrls: urls,
+          collectionIds: _selectedCollections.toList(),
         );
       }
       ref.read(myProductsProvider.notifier).reload();
@@ -162,6 +168,9 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
                   ),
                   SizedBox(height: 18.h),
                   _availabilityToggle(l10n),
+                  SizedBox(height: 18.h),
+                  _label(l10n.collectionsField),
+                  _collectionsPicker(l10n),
                 ],
               ),
             ),
@@ -241,6 +250,106 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
         child: Icon(Icons.add_a_photo_outlined, color: AppColors.textSecondary, size: 24.sp),
       ),
     );
+  }
+
+  Widget _collectionsPicker(l10n) {
+    final async = ref.watch(myCollectionsProvider);
+    return async.when(
+      loading: () => Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.h),
+        child: SizedBox(width: 18.w, height: 18.w, child: const CircularProgressIndicator(strokeWidth: 2)),
+      ),
+      error: (_, __) => Text(l10n.couldNotLoadCollections,
+          style: AppTextStyles.style13px.w500.copyWith(color: AppColors.textSecondary)),
+      data: (cols) => Wrap(
+        spacing: 8.w,
+        runSpacing: 8.h,
+        children: [
+          ...cols.map((c) {
+            final selected = _selectedCollections.contains(c.id);
+            return GestureDetector(
+              onTap: () => setState(() {
+                selected ? _selectedCollections.remove(c.id) : _selectedCollections.add(c.id);
+              }),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
+                decoration: BoxDecoration(
+                  color: selected ? AppColors.primary : AppColors.surface,
+                  borderRadius: BorderRadius.circular(30.r),
+                  border: Border.all(color: selected ? AppColors.primary : AppColors.border),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (selected) ...[
+                      Icon(Icons.check, size: 14.sp, color: AppColors.onPrimary),
+                      SizedBox(width: 4.w),
+                    ],
+                    Text(c.name,
+                        style: AppTextStyles.style13px.w600
+                            .copyWith(color: selected ? AppColors.onPrimary : AppColors.textPrimary)),
+                  ],
+                ),
+              ),
+            );
+          }),
+          GestureDetector(
+            onTap: _newCollection,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                color: AppColors.card,
+                borderRadius: BorderRadius.circular(30.r),
+                border: Border.all(color: AppColors.primary),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.add, size: 15.sp, color: AppColors.primary),
+                  SizedBox(width: 4.w),
+                  Text(l10n.newCollection,
+                      style: AppTextStyles.style13px.w700.copyWith(color: AppColors.primary)),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _newCollection() async {
+    final l10n = context.l10n;
+    final controller = TextEditingController();
+    final name = await showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.card,
+        title: Text(l10n.newCollection, style: AppTextStyles.style16px.w700),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          maxLength: 80,
+          decoration: InputDecoration(hintText: l10n.collectionNameHint),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.cancel)),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+            child: Text(l10n.createCollection,
+                style: AppTextStyles.style14px.w700.copyWith(color: AppColors.primary)),
+          ),
+        ],
+      ),
+    );
+    if (name == null || name.isEmpty) return;
+    try {
+      final created = await ref.read(catalogRepositoryProvider).createCollection(name);
+      await ref.read(myCollectionsProvider.notifier).reload();
+      if (mounted) setState(() => _selectedCollections.add(created.id));
+    } catch (_) {
+      if (mounted) ScaffoldToast.showErrorBottom(context, l10n.couldNotSaveCollection);
+    }
   }
 
   Widget _availabilityToggle(l10n) {

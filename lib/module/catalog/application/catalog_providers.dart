@@ -50,3 +50,34 @@ final storeByUserProvider =
     FutureProvider.family<PublicStore?, String>((ref, userId) {
   return ref.read(catalogRepositoryProvider).storeByUser(userId);
 });
+
+/// The caller's collections (owner view).
+final myCollectionsProvider =
+    AsyncNotifierProvider<MyCollectionsController, List<Collection>>(MyCollectionsController.new);
+
+class MyCollectionsController extends AsyncNotifier<List<Collection>> {
+  @override
+  Future<List<Collection>> build() => ref.read(catalogRepositoryProvider).myCollections();
+
+  Future<void> reload() async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() => ref.read(catalogRepositoryProvider).myCollections());
+  }
+}
+
+/// Marketplace browse/search of all stores (keyed by the search query; '' = all).
+final storeBrowseProvider = FutureProvider.family<PublicStorePage, String>((ref, query) {
+  return ref.read(catalogRepositoryProvider).browseStores(q: query.isEmpty ? null : query);
+});
+
+/// A store's public collections (filter chips).
+final publicCollectionsProvider =
+    FutureProvider.family<List<PublicCollection>, String>((ref, catalogId) {
+  return ref.read(catalogRepositoryProvider).publicCollections(catalogId);
+});
+
+/// A store's products, optionally filtered by collection (id, or "none" for uncategorized).
+final storeProductsProvider =
+    FutureProvider.family<PublicProductPage, ({String catalogId, String? collection})>((ref, q) {
+  return ref.read(catalogRepositoryProvider).publicProducts(q.catalogId, collection: q.collection);
+});

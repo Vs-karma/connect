@@ -9,35 +9,46 @@ import 'package:connect/res/app_colors.dart';
 import 'package:connect/res/text_style.dart';
 import 'package:connect/utility/l10n_extension.dart';
 import 'package:connect/widgets/app_bar.dart';
+import 'package:connect/widgets/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// Buyer-facing store: header + product grid.
-class StoreViewScreen extends ConsumerWidget {
+/// Buyer-facing store: header + collection filter chips + product grid.
+class StoreViewScreen extends ConsumerStatefulWidget {
   final String catalogId;
 
   const StoreViewScreen({super.key, required this.catalogId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<StoreViewScreen> createState() => _StoreViewScreenState();
+}
+
+class _StoreViewScreenState extends ConsumerState<StoreViewScreen> {
+  String? _collection; // null = All, "none" = Others, else collectionId
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final storeAsync = ref.watch(publicStoreProvider(catalogId));
-    final productsAsync = ref.watch(publicProductsProvider(catalogId));
+    final storeAsync = ref.watch(publicStoreProvider(widget.catalogId));
+    final collectionsAsync = ref.watch(publicCollectionsProvider(widget.catalogId));
+    final productsAsync =
+        ref.watch(storeProductsProvider((catalogId: widget.catalogId, collection: _collection)));
 
     return Scaffold(
       appBar: CommonAppBar(title: storeAsync.value?.name ?? l10n.viewStore),
       body: RefreshIndicator(
         onRefresh: () async {
-          ref.invalidate(publicStoreProvider(catalogId));
-          ref.invalidate(publicProductsProvider(catalogId));
+          ref.invalidate(publicStoreProvider(widget.catalogId));
+          ref.invalidate(publicCollectionsProvider(widget.catalogId));
+          ref.invalidate(storeProductsProvider((catalogId: widget.catalogId, collection: _collection)));
         },
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(child: _header(context, storeAsync, l10n)),
+            SliverToBoxAdapter(child: _chips(collectionsAsync, l10n)),
             productsAsync.when(
-              loading: () => const SliverToBoxAdapter(
-                  child: Padding(padding: EdgeInsets.all(40), child: Center(child: CircularProgressIndicator()))),
+              loading: () => const SliverToBoxAdapter(child: ProductGridSkeleton()),
               error: (_, __) => SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.all(40.w),
@@ -90,9 +101,48 @@ class StoreViewScreen extends ConsumerWidget {
     );
   }
 
+  Widget _chips(AsyncValue<List<PublicCollection>> collectionsAsync, l10n) {
+    final collections = collectionsAsync.value ?? const <PublicCollection>[];
+    if (collections.isEmpty) return const SizedBox.shrink();
+    return SizedBox(
+      height: 36.h,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        children: [
+          _chip(l10n.allFilter, _collection == null, () => setState(() => _collection = null)),
+          for (final c in collections)
+            _chip(c.name, _collection == c.id, () => setState(() => _collection = c.id)),
+          _chip(l10n.othersFilter, _collection == 'none', () => setState(() => _collection = 'none')),
+        ],
+      ),
+    );
+  }
+
+  Widget _chip(String label, bool selected, VoidCallback onTap) {
+    return Padding(
+      padding: EdgeInsets.only(right: 8.w),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(horizontal: 14.w),
+          decoration: BoxDecoration(
+            color: selected ? AppColors.primary : AppColors.surface,
+            borderRadius: BorderRadius.circular(30.r),
+            border: Border.all(color: selected ? AppColors.primary : AppColors.border),
+          ),
+          child: Text(label,
+              style: AppTextStyles.style13px.w600
+                  .copyWith(color: selected ? AppColors.onPrimary : AppColors.textPrimary)),
+        ),
+      ),
+    );
+  }
+
   Widget _header(BuildContext context, AsyncValue<PublicStore> storeAsync, l10n) {
     return storeAsync.when(
-      loading: () => SizedBox(height: 120.h, child: const Center(child: CircularProgressIndicator())),
+      loading: () => const StoreHeaderSkeleton(),
       error: (_, __) => Padding(
         padding: EdgeInsets.all(20.w),
         child: Text(l10n.couldNotLoadStore,

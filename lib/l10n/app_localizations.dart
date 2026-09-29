@@ -842,6 +842,138 @@ abstract class AppLocalizations {
   /// **'Shared a product'**
   String get sharedAProduct;
 
+  /// No description provided for @collections.
+  ///
+  /// In en, this message translates to:
+  /// **'Collections'**
+  String get collections;
+
+  /// No description provided for @manageCollections.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage collections'**
+  String get manageCollections;
+
+  /// No description provided for @newCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'New collection'**
+  String get newCollection;
+
+  /// No description provided for @collectionName.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection name'**
+  String get collectionName;
+
+  /// No description provided for @collectionNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. New Arrivals'**
+  String get collectionNameHint;
+
+  /// No description provided for @createCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Create collection'**
+  String get createCollection;
+
+  /// No description provided for @renameCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename collection'**
+  String get renameCollection;
+
+  /// No description provided for @deleteCollectionConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete \"{name}\"? Products stay, they\'re just removed from this collection.'**
+  String deleteCollectionConfirm(String name);
+
+  /// No description provided for @noCollectionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No collections yet'**
+  String get noCollectionsYet;
+
+  /// No description provided for @addFirstCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Group your products into collections'**
+  String get addFirstCollection;
+
+  /// No description provided for @couldNotSaveCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save collection.'**
+  String get couldNotSaveCollection;
+
+  /// No description provided for @couldNotDeleteCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete collection.'**
+  String get couldNotDeleteCollection;
+
+  /// No description provided for @couldNotLoadCollections.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load collections.'**
+  String get couldNotLoadCollections;
+
+  /// No description provided for @collectionsField.
+  ///
+  /// In en, this message translates to:
+  /// **'Collections'**
+  String get collectionsField;
+
+  /// No description provided for @noneOption.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get noneOption;
+
+  /// No description provided for @allFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get allFilter;
+
+  /// No description provided for @othersFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Others'**
+  String get othersFilter;
+
+  /// No description provided for @storesTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Stores'**
+  String get storesTab;
+
+  /// No description provided for @searchStores.
+  ///
+  /// In en, this message translates to:
+  /// **'Search stores'**
+  String get searchStores;
+
+  /// No description provided for @noStoresYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No stores yet'**
+  String get noStoresYet;
+
+  /// No description provided for @noStoresFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No stores match your search'**
+  String get noStoresFound;
+
+  /// No description provided for @couldNotLoadStores.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load stores.'**
+  String get couldNotLoadStores;
+
   /// No description provided for @details.
   ///
   /// In en, this message translates to:

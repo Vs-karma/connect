@@ -33,10 +33,38 @@ abstract class Product with _$Product {
     String? sku,
     @Default('ACTIVE') String status,
     @Default(<String>[]) List<String> imageUrls,
+    @Default(<String>[]) List<String> collectionIds,
     DateTime? createdAt,
   }) = _Product;
 
   factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
+}
+
+/// A seller's collection (owner view).
+@freezed
+abstract class Collection with _$Collection {
+  const factory Collection({
+    required String id,
+    required String name,
+    String? coverUrl,
+    @Default(0) int sortOrder,
+    @Default(0) int productCount,
+  }) = _Collection;
+
+  factory Collection.fromJson(Map<String, dynamic> json) => _$CollectionFromJson(json);
+}
+
+/// A store's collection (buyer-facing, for filter chips).
+@freezed
+abstract class PublicCollection with _$PublicCollection {
+  const factory PublicCollection({
+    required String id,
+    required String name,
+    String? coverUrl,
+    @Default(0) int productCount,
+  }) = _PublicCollection;
+
+  factory PublicCollection.fromJson(Map<String, dynamic> json) => _$PublicCollectionFromJson(json);
 }
 
 @freezed
@@ -61,12 +89,27 @@ abstract class PublicStore with _$PublicStore {
     required String category,
     String? tagline,
     String? logoUrl,
+    String? coverImageUrl,
     @Default(0) int productCount,
     required String ownerUserId,
     String? ownerName,
   }) = _PublicStore;
 
   factory PublicStore.fromJson(Map<String, dynamic> json) => _$PublicStoreFromJson(json);
+}
+
+/// Paged list of stores (marketplace browse).
+@freezed
+abstract class PublicStorePage with _$PublicStorePage {
+  const factory PublicStorePage({
+    @Default(<PublicStore>[]) List<PublicStore> content,
+    @Default(0) int page,
+    @Default(0) int size,
+    @Default(0) int totalElements,
+    @Default(0) int totalPages,
+  }) = _PublicStorePage;
+
+  factory PublicStorePage.fromJson(Map<String, dynamic> json) => _$PublicStorePageFromJson(json);
 }
 
 /// Buyer-facing product (mirrors backend PublicProductResponse).

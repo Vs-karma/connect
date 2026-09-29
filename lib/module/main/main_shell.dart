@@ -1,5 +1,6 @@
 import 'package:connect/module/broadcast/presentation/broadcast_screen.dart';
 import 'package:connect/module/broadcastlist/presentation/broadcast_lists_screen.dart';
+import 'package:connect/module/catalog/presentation/store_browse_screen.dart';
 import 'package:connect/module/chat/application/chat_providers.dart';
 import 'package:connect/module/contact/presentation/contacts_screen.dart';
 import 'package:connect/module/settings/presentation/profile_settings_screen.dart';
@@ -18,9 +19,9 @@ class MainShell extends ConsumerStatefulWidget {
 }
 
 class _MainShellState extends ConsumerState<MainShell> {
-  int _tab = 0; // 0 = Home (Broadcast list), 1 = Settings
+  int _tab = 0; // 0 = Home (chats), 1 = Store (marketplace), 2 = Settings
 
-  static const _tabs = [BroadcastScreen(), ProfileSettingsScreen()];
+  static const _tabs = [BroadcastScreen(), StoreBrowseScreen(), ProfileSettingsScreen()];
 
   @override
   void initState() {
@@ -31,14 +32,15 @@ class _MainShellState extends ConsumerState<MainShell> {
   }
 
   void _onNavTap(int navIndex) {
-    if (navIndex == 1) {
-      // Middle "Broadcast" action → the user's broadcast lists.
+    if (navIndex == 2) {
+      // "Broadcast" action → the user's broadcast lists (not a tab).
       Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => const BroadcastListsScreen()),
       );
       return;
     }
-    setState(() => _tab = navIndex == 2 ? 1 : 0);
+    // navIndex 0 = Home, 1 = Store, 3 = Settings → tab 0/1/2
+    setState(() => _tab = navIndex == 3 ? 2 : navIndex);
   }
 
   void _newChat() {
@@ -61,7 +63,8 @@ class _MainShellState extends ConsumerState<MainShell> {
             )
           : null,
       bottomNavigationBar: AppBottomNav(
-        currentIndex: _tab == 0 ? 0 : 2,
+        // tab 0/1/2 → nav slot 0 (Home) / 1 (Store) / 3 (Settings)
+        currentIndex: _tab == 2 ? 3 : _tab,
         onTap: _onNavTap,
         homeBadge: unread,
       ),

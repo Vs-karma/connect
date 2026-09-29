@@ -6,6 +6,7 @@ import 'package:connect/res/text_style.dart';
 import 'package:connect/utility/l10n_extension.dart';
 import 'package:connect/widgets/app_bar.dart';
 import 'package:connect/widgets/app_search_field.dart';
+import 'package:connect/widgets/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +42,7 @@ class _BroadcastScreenState extends ConsumerState<BroadcastScreen> {
             ),
             Expanded(
               child: chats.when(
-                loading: () => const Center(child: CircularProgressIndicator()),
+                loading: () => const ChatListSkeleton(),
                 error: (e, _) => _errorState(e),
                 data: (all) {
                   if (all.isEmpty) return _emptyState(l10n);

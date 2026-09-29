@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connect/module/catalog/application/catalog_providers.dart';
 import 'package:connect/module/catalog/data/catalog_models.dart';
 import 'package:connect/module/catalog/presentation/catalog_categories.dart';
+import 'package:connect/module/catalog/presentation/manage_collections_screen.dart';
 import 'package:connect/module/catalog/presentation/price_format.dart';
 import 'package:connect/module/catalog/presentation/product_edit_screen.dart';
 import 'package:connect/module/catalog/presentation/product_share_picker.dart';
@@ -13,21 +14,41 @@ import 'package:connect/utility/app_toast.dart';
 import 'package:connect/utility/l10n_extension.dart';
 import 'package:connect/widgets/app_bar.dart';
 import 'package:connect/widgets/app_button.dart';
+import 'package:connect/widgets/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-/// The seller's store manager: header + products, with add/edit/hide/delete/share.
-class MyStoreScreen extends ConsumerWidget {
+/// The seller's store manager: header + collection filter + products, with add/edit/hide/delete/share.
+class MyStoreScreen extends ConsumerStatefulWidget {
   const MyStoreScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyStoreScreen> createState() => _MyStoreScreenState();
+}
+
+class _MyStoreScreenState extends ConsumerState<MyStoreScreen> {
+  String? _collection; // null = All, "none" = Others, else collectionId
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
     final storeAsync = ref.watch(myStoreProvider);
 
     return storeAsync.when(
-      loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
+      loading: () => Scaffold(
+        appBar: CommonAppBar(title: l10n.myStore),
+        body: SafeArea(
+          top: false,
+          child: Column(
+            children: const [
+              StoreHeaderSkeleton(),
+              SizedBox(height: 14),
+              Expanded(child: ProductListSkeleton()),
+            ],
+          ),
+        ),
+      ),
       error: (_, __) => Scaffold(
         appBar: CommonAppBar(title: l10n.myStore),
         body: Center(
@@ -77,6 +98,14 @@ class MyStoreScreen extends ConsumerWidget {
         title: l10n.myStore,
         actions: [
           IconButton(
+            tooltip: l10n.collections,
+            icon: Icon(Icons.collections_bookmark_outlined, color: AppColors.textPrimary, size: 22.sp),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const ManageCollectionsScreen()),
+            ),
+          ),
+          IconButton(
+            tooltip: l10n.editStore,
             icon: Icon(Icons.edit_outlined, color: AppColors.textPrimary, size: 22.sp),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => StoreSetupScreen(existing: store)),
@@ -99,28 +128,84 @@ class MyStoreScreen extends ConsumerWidget {
           children: [
             _header(context, store, l10n),
             Divider(height: 1, color: AppColors.divider),
+            SizedBox(height: 14.h),
+            _filterBar(l10n),
             Expanded(
               child: productsAsync.when(
-                loading: () => const Center(child: CircularProgressIndicator()),
+                loading: () => const ProductListSkeleton(),
                 error: (_, __) => Center(
                   child: Text(l10n.couldNotLoadProducts,
                       style: AppTextStyles.style14px.w600.copyWith(color: AppColors.textSecondary)),
                 ),
                 data: (products) {
                   if (products.isEmpty) return _emptyProducts(l10n);
+                  final filtered = _applyFilter(products);
+                  if (filtered.isEmpty) {
+                    return Center(
+                      child: Text(l10n.noProductsYet,
+                          style: AppTextStyles.style14px.w500.copyWith(color: AppColors.textSecondary)),
+                    );
+                  }
                   return RefreshIndicator(
                     onRefresh: () => ref.read(myProductsProvider.notifier).reload(),
                     child: ListView.separated(
                       padding: EdgeInsets.fromLTRB(20.w, 12.h, 20.w, 90.h),
-                      itemCount: products.length,
+                      itemCount: filtered.length,
                       separatorBuilder: (_, __) => SizedBox(height: 10.h),
-                      itemBuilder: (_, i) => _productRow(context, ref, products[i], l10n),
+                      itemBuilder: (_, i) => _productRow(context, ref, filtered[i], l10n),
                     ),
                   );
                 },
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  List<Product> _applyFilter(List<Product> products) {
+    if (_collection == null) return products;
+    if (_collection == 'none') return products.where((p) => p.collectionIds.isEmpty).toList();
+    return products.where((p) => p.collectionIds.contains(_collection)).toList();
+  }
+
+  /// Collection filter chips (All · collections · Others). Hidden if there are no collections.
+  Widget _filterBar(l10n) {
+    final async = ref.watch(myCollectionsProvider);
+    final collections = async.value ?? const <Collection>[];
+    if (collections.isEmpty) return const SizedBox.shrink();
+    return SizedBox(
+      height: 36.h,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        children: [
+          _filterChip(l10n.allFilter, _collection == null, () => setState(() => _collection = null)),
+          for (final c in collections)
+            _filterChip(c.name, _collection == c.id, () => setState(() => _collection = c.id)),
+          _filterChip(l10n.othersFilter, _collection == 'none', () => setState(() => _collection = 'none')),
+        ],
+      ),
+    );
+  }
+
+  Widget _filterChip(String label, bool selected, VoidCallback onTap) {
+    return Padding(
+      padding: EdgeInsets.only(right: 8.w),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(horizontal: 14.w),
+          decoration: BoxDecoration(
+            color: selected ? AppColors.primary : AppColors.surface,
+            borderRadius: BorderRadius.circular(30.r),
+            border: Border.all(color: selected ? AppColors.primary : AppColors.border),
+          ),
+          child: Text(label,
+              style: AppTextStyles.style13px.w600
+                  .copyWith(color: selected ? AppColors.onPrimary : AppColors.textPrimary)),
         ),
       ),
     );

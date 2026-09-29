@@ -399,6 +399,74 @@ class AppLocalizationsHi extends AppLocalizations {
   String get sharedAProduct => 'एक उत्पाद साझा किया';
 
   @override
+  String get collections => 'संग्रह';
+
+  @override
+  String get manageCollections => 'संग्रह प्रबंधित करें';
+
+  @override
+  String get newCollection => 'नया संग्रह';
+
+  @override
+  String get collectionName => 'संग्रह का नाम';
+
+  @override
+  String get collectionNameHint => 'जैसे नए आगमन';
+
+  @override
+  String get createCollection => 'संग्रह बनाएँ';
+
+  @override
+  String get renameCollection => 'संग्रह का नाम बदलें';
+
+  @override
+  String deleteCollectionConfirm(String name) {
+    return '\"$name\" हटाएँ? उत्पाद बने रहेंगे, बस इस संग्रह से हट जाएँगे।';
+  }
+
+  @override
+  String get noCollectionsYet => 'अभी तक कोई संग्रह नहीं';
+
+  @override
+  String get addFirstCollection => 'अपने उत्पादों को संग्रह में समूहित करें';
+
+  @override
+  String get couldNotSaveCollection => 'संग्रह सहेजा नहीं जा सका।';
+
+  @override
+  String get couldNotDeleteCollection => 'संग्रह नहीं हटाया जा सका।';
+
+  @override
+  String get couldNotLoadCollections => 'संग्रह लोड नहीं हो सके।';
+
+  @override
+  String get collectionsField => 'संग्रह';
+
+  @override
+  String get noneOption => 'कोई नहीं';
+
+  @override
+  String get allFilter => 'सभी';
+
+  @override
+  String get othersFilter => 'अन्य';
+
+  @override
+  String get storesTab => 'स्टोर';
+
+  @override
+  String get searchStores => 'स्टोर खोजें';
+
+  @override
+  String get noStoresYet => 'अभी तक कोई स्टोर नहीं';
+
+  @override
+  String get noStoresFound => 'आपकी खोज से कोई स्टोर मेल नहीं खाता';
+
+  @override
+  String get couldNotLoadStores => 'स्टोर लोड नहीं हो सके।';
+
+  @override
   String get details => 'विवरण';
 
   @override

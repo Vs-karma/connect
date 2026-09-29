@@ -27,8 +27,9 @@ class AppBottomNav extends StatelessWidget {
         child: Row(
           children: [
             _item(0, PhosphorIconsFill.house, PhosphorIconsRegular.house, l10n.home, badge: homeBadge),
-            _item(1, PhosphorIconsFill.broadcast, PhosphorIconsRegular.broadcast, l10n.broadcast),
-            _item(2, PhosphorIconsFill.gearSix, PhosphorIconsRegular.gearSix, l10n.settings),
+            _item(1, PhosphorIconsFill.storefront, PhosphorIconsRegular.storefront, l10n.storesTab),
+            _item(2, PhosphorIconsFill.broadcast, PhosphorIconsRegular.broadcast, l10n.broadcast),
+            _item(3, PhosphorIconsFill.gearSix, PhosphorIconsRegular.gearSix, l10n.settings),
           ],
         ),
       ),

@@ -70,6 +70,7 @@ class CatalogRepository {
     String availability = 'IN_STOCK',
     String? sku,
     List<String> imageUrls = const [],
+    List<String> collectionIds = const [],
   }) async {
     final res = await _api.post(EndPoints.CATALOG_PRODUCTS, body: {
       'name': name,
@@ -79,11 +80,12 @@ class CatalogRepository {
       'availability': availability,
       if (sku != null && sku.isNotEmpty) 'sku': sku,
       'imageUrls': imageUrls,
+      'collectionIds': collectionIds,
     });
     return Product.fromJson(res.data as Map<String, dynamic>);
   }
 
-  /// Edit a product. Only pass the fields you want to change; imageUrls (if non-null) replaces all.
+  /// Edit a product. Only pass the fields you want to change; imageUrls/collectionIds (if non-null) replace all.
   Future<Product> updateProduct(
     String id, {
     String? name,
@@ -93,6 +95,7 @@ class CatalogRepository {
     String? sku,
     String? status,
     List<String>? imageUrls,
+    List<String>? collectionIds,
   }) async {
     final res = await _api.patch(EndPoints.catalogProduct(id), body: {
       if (name != null) 'name': name,
@@ -102,8 +105,44 @@ class CatalogRepository {
       if (sku != null) 'sku': sku,
       if (status != null) 'status': status,
       if (imageUrls != null) 'imageUrls': imageUrls,
+      if (collectionIds != null) 'collectionIds': collectionIds,
     });
     return Product.fromJson(res.data as Map<String, dynamic>);
+  }
+
+  // ---- Collections (seller) ----
+
+  Future<List<Collection>> myCollections() async {
+    final res = await _api.get(EndPoints.CATALOG_COLLECTIONS);
+    return (res.data as List<dynamic>).map((e) => Collection.fromJson(e as Map<String, dynamic>)).toList();
+  }
+
+  Future<Collection> createCollection(String name, {String? coverUrl}) async {
+    final res = await _api.post(EndPoints.CATALOG_COLLECTIONS, body: {
+      'name': name,
+      if (coverUrl != null && coverUrl.isNotEmpty) 'coverUrl': coverUrl,
+    });
+    return Collection.fromJson(res.data as Map<String, dynamic>);
+  }
+
+  Future<Collection> updateCollection(String id, {String? name, String? coverUrl, int? sortOrder}) async {
+    final res = await _api.patch(EndPoints.catalogCollection(id), body: {
+      if (name != null) 'name': name,
+      if (coverUrl != null) 'coverUrl': coverUrl,
+      if (sortOrder != null) 'sortOrder': sortOrder,
+    });
+    return Collection.fromJson(res.data as Map<String, dynamic>);
+  }
+
+  Future<void> deleteCollection(String id) async {
+    await _api.delete(EndPoints.catalogCollection(id));
+  }
+
+  Future<List<PublicCollection>> publicCollections(String catalogId) async {
+    final res = await _api.get(EndPoints.publicCatalogCollections(catalogId));
+    return (res.data as List<dynamic>)
+        .map((e) => PublicCollection.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<void> deleteProduct(String id) async {
@@ -111,6 +150,16 @@ class CatalogRepository {
   }
 
   // ---- Public browse ----
+
+  /// Browse/search all stores (marketplace).
+  Future<PublicStorePage> browseStores({String? q, int page = 0, int size = 20}) async {
+    final res = await _api.get(EndPoints.STORES, queryParameters: {
+      'page': page,
+      'size': size,
+      if (q != null && q.isNotEmpty) 'q': q,
+    });
+    return PublicStorePage.fromJson(res.data as Map<String, dynamic>);
+  }
 
   Future<PublicStore> publicStore(String catalogId) async {
     final res = await _api.get(EndPoints.publicCatalog(catalogId));
@@ -128,9 +177,13 @@ class CatalogRepository {
     }
   }
 
-  Future<PublicProductPage> publicProducts(String catalogId, {int page = 0, int size = 50}) async {
-    final res = await _api.get(EndPoints.publicCatalogProducts(catalogId),
-        queryParameters: {'page': page, 'size': size});
+  Future<PublicProductPage> publicProducts(String catalogId,
+      {String? collection, int page = 0, int size = 50}) async {
+    final res = await _api.get(EndPoints.publicCatalogProducts(catalogId), queryParameters: {
+      'page': page,
+      'size': size,
+      if (collection != null && collection.isNotEmpty) 'collection': collection,
+    });
     return PublicProductPage.fromJson(res.data as Map<String, dynamic>);
   }
 

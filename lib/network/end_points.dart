@@ -7,7 +7,7 @@ class EndPoints {
 
   static const String _prodBaseUrl = 'https://api.connect-messenger.com';
 
-  static String _baseUrl = !kReleaseMode ? _prodBaseUrl : _devBaseUrl;
+  static String _baseUrl = kReleaseMode ? _prodBaseUrl : _devBaseUrl;
 
   static String get BASE_URL => _baseUrl;
 
@@ -72,6 +72,10 @@ class EndPoints {
   static String publicCatalogProducts(String id) => '$_api/catalogs/$id/products';
   static String publicProduct(String id) => '$_api/products/$id';
   static String userCatalog(String userId) => '$_api/users/$userId/catalog';
+  static String get STORES => '$_api/stores';
+  static String get CATALOG_COLLECTIONS => '$_api/catalog/me/collections';
+  static String catalogCollection(String id) => '$_api/catalog/me/collections/$id';
+  static String publicCatalogCollections(String id) => '$_api/catalogs/$id/collections';
 
   // 1:1 chat (WhatsApp-style)
   static String get CONVERSATIONS => '$_api/conversations';

@@ -398,6 +398,74 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sharedAProduct => 'Shared a product';
 
   @override
+  String get collections => 'Collections';
+
+  @override
+  String get manageCollections => 'Manage collections';
+
+  @override
+  String get newCollection => 'New collection';
+
+  @override
+  String get collectionName => 'Collection name';
+
+  @override
+  String get collectionNameHint => 'e.g. New Arrivals';
+
+  @override
+  String get createCollection => 'Create collection';
+
+  @override
+  String get renameCollection => 'Rename collection';
+
+  @override
+  String deleteCollectionConfirm(String name) {
+    return 'Delete \"$name\"? Products stay, they\'re just removed from this collection.';
+  }
+
+  @override
+  String get noCollectionsYet => 'No collections yet';
+
+  @override
+  String get addFirstCollection => 'Group your products into collections';
+
+  @override
+  String get couldNotSaveCollection => 'Could not save collection.';
+
+  @override
+  String get couldNotDeleteCollection => 'Could not delete collection.';
+
+  @override
+  String get couldNotLoadCollections => 'Could not load collections.';
+
+  @override
+  String get collectionsField => 'Collections';
+
+  @override
+  String get noneOption => 'None';
+
+  @override
+  String get allFilter => 'All';
+
+  @override
+  String get othersFilter => 'Others';
+
+  @override
+  String get storesTab => 'Stores';
+
+  @override
+  String get searchStores => 'Search stores';
+
+  @override
+  String get noStoresYet => 'No stores yet';
+
+  @override
+  String get noStoresFound => 'No stores match your search';
+
+  @override
+  String get couldNotLoadStores => 'Could not load stores.';
+
+  @override
   String get details => 'Details';
 
   @override
