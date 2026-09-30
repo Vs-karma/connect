@@ -2,5 +2,6 @@
 <resources>
     <!-- Brand primary (Mitra/Connect green) used for the native launch window background -->
     <color name="primary">#44B28D</color>
-	<color name="ic_launcher_background">#178373</color>
+    <!-- Adaptive launcher icon background — same primary color as the launch window -->
+    <color name="ic_launcher_background">@color/primary</color>
 </resources>
