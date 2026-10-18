@@ -1,3 +1,4 @@
+import 'package:connect/app/app_nav.dart';
 import 'package:connect/module/catalog/application/catalog_providers.dart';
 import 'package:connect/module/catalog/data/catalog_models.dart';
 import 'package:connect/module/catalog/presentation/catalog_categories.dart';
@@ -69,8 +70,10 @@ class PeerProfileScreen extends ConsumerWidget {
 
   Widget _storeCard(BuildContext context, PublicStore store, l10n) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => StoreViewScreen(catalogId: store.id)),
+      onTap: () => revealOrPush(
+        context,
+        storeRouteName(store.id),
+        (_) => StoreViewScreen(catalogId: store.id),
       ),
       child: Container(
         padding: EdgeInsets.all(14.w),

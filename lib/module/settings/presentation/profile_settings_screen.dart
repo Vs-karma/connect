@@ -1,4 +1,5 @@
 import 'package:connect/app/locale_controller.dart';
+import 'package:connect/app/session_reset.dart';
 import 'package:connect/module/auth/application/session_controller.dart';
 import 'package:connect/module/broadcast/presentation/broadcast_history_screen.dart';
 import 'package:connect/module/catalog/presentation/my_store_screen.dart';
@@ -9,6 +10,7 @@ import 'package:connect/res/text_style.dart';
 import 'package:connect/services/lock_service.dart';
 import 'package:connect/utility/app_toast.dart';
 import 'package:connect/utility/l10n_extension.dart';
+import 'package:connect/utility/username_validator.dart';
 import 'package:connect/widgets/app_bar.dart';
 import 'package:connect/widgets/section_title.dart';
 import 'package:connect/widgets/setting_tiles.dart';
@@ -116,8 +118,10 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen>
               child: GestureDetector(
                 onTap: () async {
                   // Clear the session state (also clears tokens + tells the backend),
-                  // then pop back to the root so AuthGate rebuilds to the login screen.
+                  // wipe every user-scoped provider cache so the next login starts
+                  // clean, then pop back to the root so AuthGate rebuilds to login.
                   await ref.read(sessionControllerProvider.notifier).logout();
+                  clearUserScopedState(ref);
                   if (context.mounted) {
                     Navigator.of(context).popUntil((r) => r.isFirst);
                   }
@@ -186,28 +190,69 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen>
   Future<void> _editName(String? current) async {
     final controller = TextEditingController(text: current ?? '');
     final l10n = context.l10n;
+    String? error;
     final name = await showDialog<String>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: AppColors.card,
-        title: Text(l10n.nameLabel, style: AppTextStyles.style16px.w700),
-        content: TextField(controller: controller, autofocus: true, maxLength: 120),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.cancel)),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
-            child: Text('Save', style: AppTextStyles.style14px.w700.copyWith(color: AppColors.primary)),
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setLocal) => AlertDialog(
+          backgroundColor: AppColors.card,
+          title: Text(l10n.nameLabel, style: AppTextStyles.style16px.w700),
+          content: TextField(
+            controller: controller,
+            autofocus: true,
+            maxLength: kUsernameMax,
+            inputFormatters: [usernameInputFormatter],
+            decoration: InputDecoration(
+              errorText: error,
+              helperText: l10n.nameInvalidChars,
+              helperMaxLines: 2,
+            ),
+            onChanged: (_) {
+              if (error != null) setLocal(() => error = null);
+            },
           ),
-        ],
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(ctx), child: Text(l10n.cancel)),
+            TextButton(
+              onPressed: () {
+                final value = controller.text.trim();
+                final code = usernameError(value);
+                if (code != null) {
+                  setLocal(() => error = _nameErrorMessage(code, l10n));
+                  return;
+                }
+                Navigator.pop(ctx, value);
+              },
+              child: Text(l10n.save, style: AppTextStyles.style14px.w700.copyWith(color: AppColors.primary)),
+            ),
+          ],
+        ),
       ),
     );
     if (name == null || name.isEmpty) return;
     try {
       await ref.read(profileRepositoryProvider).updateName(name);
+      await ref.read(sessionControllerProvider.notifier).refreshUser();
       ref.invalidate(profileProvider);
     } catch (_) {
       if (mounted) ScaffoldToast.showErrorBottom(context, 'Could not update name.');
     }
+  }
+
+  String? _nameErrorMessage(String code, l10n) {
+    switch (code) {
+      case 'empty':
+        return l10n.nameRequired;
+      case 'short':
+        return l10n.nameTooShort;
+      case 'long':
+        return l10n.nameTooLong;
+      case 'start':
+        return l10n.nameInvalidStart;
+      case 'chars':
+        return l10n.nameInvalidChars;
+    }
+    return null;
   }
 
   Widget _settingsCard(l10n, SettingsState s, SettingsController ctrl) {

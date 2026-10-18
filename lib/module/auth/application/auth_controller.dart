@@ -33,10 +33,10 @@ class AuthController extends Notifier<AuthState> {
     }
   }
 
-  Future<void> verifyOtp({required String otp, DeviceInfoData? device}) async {
+  Future<TokenResponse> verifyOtp({required String otp, DeviceInfoData? device}) async {
     state = state.copyWith(isLoading: true);
     try {
-      await ref.read(sessionControllerProvider.notifier).verifyOtp(
+      final tokens = await ref.read(sessionControllerProvider.notifier).verifyOtp(
             requestId: state.requestId!,
             phone: state.phone!,
             otp: otp,
@@ -44,6 +44,7 @@ class AuthController extends Notifier<AuthState> {
             device: device,
           );
       state = state.copyWith(isLoading: false);
+      return tokens;
     } catch (_) {
       state = state.copyWith(isLoading: false);
       rethrow;

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:connect/app/app_nav.dart';
 import 'package:connect/module/broadcast/data/broadcast_message.dart';
 import 'package:connect/module/broadcast/presentation/widgets/attach_sheet.dart';
 import 'package:connect/module/broadcast/presentation/widgets/message_bubble.dart';
@@ -266,14 +267,16 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   }
 
   void _openPeerProfile() {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => PeerProfileScreen(
+    revealOrPush(
+      context,
+      profileRouteName(widget.peerUserId!),
+      (_) => PeerProfileScreen(
         userId: widget.peerUserId!,
         name: widget.peerName,
         avatarUrl: widget.peerAvatarUrl,
         phone: widget.peerPhone,
       ),
-    ));
+    );
   }
 
   Widget _newChatHint() {

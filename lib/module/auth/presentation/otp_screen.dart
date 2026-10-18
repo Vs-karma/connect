@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:connect/module/auth/application/auth_controller.dart';
 import 'package:connect/module/auth/data/auth_models.dart';
+import 'package:connect/module/auth/presentation/name_setup_screen.dart';
 import 'package:connect/res/app_colors.dart';
 import 'package:connect/res/app_images.dart';
 import 'package:connect/res/text_style.dart';
@@ -70,7 +71,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       return;
     }
     try {
-      await ref.read(authControllerProvider.notifier).verifyOtp(
+      final tokens = await ref.read(authControllerProvider.notifier).verifyOtp(
             otp: otp,
             device: DeviceInfoData(
               platform: Platform.isAndroid ? 'android' : 'ios',
@@ -78,7 +79,15 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
             ),
           );
       if (!mounted) return;
-      Navigator.of(context).popUntil((r) => r.isFirst);
+      // New user (or anyone still missing a name) must pick a username first.
+      final needsName = tokens.isNewUser || (tokens.user.name ?? '').trim().isEmpty;
+      if (needsName) {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => NameSetupScreen(initialName: tokens.user.name)),
+        );
+      } else {
+        Navigator.of(context).popUntil((r) => r.isFirst);
+      }
     } catch (e) {
       if (mounted) ScaffoldToast.showErrorBottom(context, friendlyError(e));
     }

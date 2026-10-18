@@ -21,6 +21,16 @@
   "secureAndPrivate": "सुरक्षित और निजी",
   "otpConfidential": "आपका OTP गोपनीय है। इसे किसी के साथ साझा न करें",
 
+  "setUpProfile": "अपनी प्रोफ़ाइल सेट करें",
+  "whatShouldWeCallYou": "हम आपको किस नाम से बुलाएँ?",
+  "yourNameHint": "आपका नाम",
+  "continueLabel": "जारी रखें",
+  "nameRequired": "कृपया अपना नाम दर्ज करें",
+  "nameTooShort": "नाम कम से कम 2 अक्षरों का होना चाहिए",
+  "nameTooLong": "नाम अधिकतम 30 अक्षरों का हो सकता है",
+  "nameInvalidChars": "केवल अक्षर, संख्याएँ, स्पेस और . _ - ' की अनुमति है",
+  "nameInvalidStart": "नाम अक्षर या संख्या से शुरू होना चाहिए",
+
   "secureCommunication": "सुरक्षित संचार",
   "builtForBusiness": "व्यवसाय के लिए",
   "yourDataProtected": "आपका डेटा सुरक्षित है",

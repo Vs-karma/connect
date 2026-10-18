@@ -54,6 +54,15 @@ class SessionController extends AsyncNotifier<AppUser?> {
     return tokens;
   }
 
+  /// Re-fetch the signed-in user (e.g. after the name is set during signup).
+  Future<void> refreshUser() async {
+    try {
+      state = AsyncData(await _repo.me());
+    } catch (_) {
+      // keep existing state on failure
+    }
+  }
+
   Future<void> logout() async {
     final refreshToken = await SecureAuthStorageUtil.getRefreshToken();
     try {

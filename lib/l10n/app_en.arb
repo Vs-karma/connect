@@ -31,6 +31,16 @@
   "secureAndPrivate": "Secure & Private",
   "otpConfidential": "Your OTP is confidential. Don't share it with anyone",
 
+  "setUpProfile": "Set up your profile",
+  "whatShouldWeCallYou": "What should we call you?",
+  "yourNameHint": "Your name",
+  "continueLabel": "Continue",
+  "nameRequired": "Please enter your name",
+  "nameTooShort": "Name must be at least 2 characters",
+  "nameTooLong": "Name can be at most 30 characters",
+  "nameInvalidChars": "Only letters, numbers, spaces and . _ - ' are allowed",
+  "nameInvalidStart": "Name must start with a letter or number",
+
   "secureCommunication": "Secure Communication",
   "builtForBusiness": "Built For Business",
   "yourDataProtected": "Your Data Is Protected",

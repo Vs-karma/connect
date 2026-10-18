@@ -1,3 +1,4 @@
+import 'package:connect/app/app_nav.dart';
 import 'package:connect/app/locale_controller.dart';
 import 'package:connect/firebase_options.dart';
 import 'package:connect/l10n/app_localizations.dart';
@@ -64,6 +65,7 @@ class MyApp extends ConsumerWidget {
         return MaterialApp(
           key: ValueKey(dark),
           navigatorKey: navigatorKey,
+          navigatorObservers: [appRouteObserver],
           title: 'Connect',
           debugShowCheckedModeBanner: false,
           theme: buildAppTheme(dark),

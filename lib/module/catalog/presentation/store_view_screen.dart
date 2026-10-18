@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connect/app/app_nav.dart';
 import 'package:connect/module/catalog/application/catalog_providers.dart';
 import 'package:connect/module/catalog/data/catalog_models.dart';
 import 'package:connect/module/catalog/presentation/catalog_categories.dart';
@@ -84,8 +85,10 @@ class _StoreViewScreenState extends ConsumerState<StoreViewScreen> {
                         final p = page.content[i];
                         return ProductGridTile(
                           product: p,
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: p.id)),
+                          onTap: () => revealOrPush(
+                            context,
+                            productRouteName(p.id),
+                            (_) => ProductDetailScreen(productId: p.id),
                           ),
                         );
                       },

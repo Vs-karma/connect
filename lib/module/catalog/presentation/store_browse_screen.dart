@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connect/app/app_nav.dart';
 import 'package:connect/module/catalog/application/catalog_providers.dart';
 import 'package:connect/module/catalog/data/catalog_models.dart';
 import 'package:connect/module/catalog/presentation/catalog_categories.dart';
@@ -100,8 +101,10 @@ class _StoreBrowseScreenState extends ConsumerState<StoreBrowseScreen> {
 
   Widget _storeTile(BuildContext context, PublicStore s, l10n) {
     return InkWell(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => StoreViewScreen(catalogId: s.id)),
+      onTap: () => revealOrPush(
+        context,
+        storeRouteName(s.id),
+        (_) => StoreViewScreen(catalogId: s.id),
       ),
       borderRadius: BorderRadius.circular(18.r),
       child: Container(

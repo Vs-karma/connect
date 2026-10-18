@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connect/app/app_nav.dart';
 import 'package:connect/module/auth/application/session_controller.dart';
 import 'package:connect/module/catalog/application/catalog_providers.dart';
 import 'package:connect/module/catalog/data/catalog_models.dart';
@@ -97,8 +98,10 @@ class ProductDetailScreen extends ConsumerWidget {
 
   Widget _storeRow(BuildContext context, PublicProduct p) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => StoreViewScreen(catalogId: p.catalogId)),
+      onTap: () => revealOrPush(
+        context,
+        storeRouteName(p.catalogId),
+        (_) => StoreViewScreen(catalogId: p.catalogId),
       ),
       child: Container(
         padding: EdgeInsets.all(12.w),
@@ -138,13 +141,15 @@ class ProductDetailScreen extends ConsumerWidget {
               child: AppButton(
                 label: l10n.enquire,
                 icon: Icons.chat_bubble_outline,
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => ChatThreadScreen(
+                onPressed: () => openEnquiryChat(
+                  context,
+                  chatRouteName(p.ownerUserId),
+                  (_) => ChatThreadScreen(
                     peerUserId: p.ownerUserId,
                     peerName: p.storeName ?? l10n.enquire,
                     initialShareProductId: p.id,
                   ),
-                )),
+                ),
               ),
             ),
             SizedBox(width: 12.w),

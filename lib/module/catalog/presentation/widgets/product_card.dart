@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connect/app/app_nav.dart';
 import 'package:connect/module/catalog/application/catalog_providers.dart';
 import 'package:connect/module/catalog/data/catalog_models.dart';
 import 'package:connect/module/catalog/presentation/price_format.dart';
@@ -23,8 +24,10 @@ class ProductChatCard extends ConsumerWidget {
     final async = ref.watch(publicProductProvider(productId));
     final l10n = context.l10n;
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => ProductDetailScreen(productId: productId)),
+      onTap: () => revealOrPush(
+        context,
+        productRouteName(productId),
+        (_) => ProductDetailScreen(productId: productId),
       ),
       child: Container(
         width: 0.62.sw,

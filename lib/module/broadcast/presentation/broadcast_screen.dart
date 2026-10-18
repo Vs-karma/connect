@@ -1,3 +1,4 @@
+import 'package:connect/app/app_nav.dart';
 import 'package:connect/module/chat/application/chat_providers.dart';
 import 'package:connect/module/chat/presentation/chat_thread_screen.dart';
 import 'package:connect/module/chat/presentation/widgets/conversation_tile.dart';
@@ -57,20 +58,23 @@ class _BroadcastScreenState extends ConsumerState<BroadcastScreen> {
                     child: ListView.builder(
                       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
                       itemCount: filtered.length,
-                      itemBuilder: (_, i) => ConversationTile(
-                        conversation: filtered[i],
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => ChatThreadScreen(
-                              conversationId: filtered[i].id,
-                              peerUserId: filtered[i].peerUserId,
-                              peerName: filtered[i].peerName ?? filtered[i].peerPhone ?? 'Chat',
-                              peerAvatarUrl: filtered[i].peerAvatarUrl,
-                              peerPhone: filtered[i].peerPhone,
+                      itemBuilder: (_, i) {
+                        final c = filtered[i];
+                        return ConversationTile(
+                          conversation: c,
+                          onTap: () => pushOrRevealChat(
+                            context,
+                            chatRouteName(c.peerUserId ?? c.id),
+                            (_) => ChatThreadScreen(
+                              conversationId: c.id,
+                              peerUserId: c.peerUserId,
+                              peerName: c.peerName ?? c.peerPhone ?? 'Chat',
+                              peerAvatarUrl: c.peerAvatarUrl,
+                              peerPhone: c.peerPhone,
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                   );
                 },

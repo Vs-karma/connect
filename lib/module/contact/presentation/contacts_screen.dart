@@ -1,3 +1,4 @@
+import 'package:connect/app/app_nav.dart';
 import 'package:connect/module/chat/presentation/chat_thread_screen.dart';
 import 'package:connect/module/contact/application/contacts_controller.dart';
 import 'package:connect/module/contact/data/contact_api_repository.dart';
@@ -135,9 +136,11 @@ class _ContactsScreenState extends ConsumerState<ContactsScreen> {
       final status = results.isNotEmpty ? results.first : null;
       if (!mounted) return;
       if (status != null && status.hasApp && status.userId != null) {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => ChatThreadScreen(peerUserId: status.userId, peerName: c.name),
-        ));
+        pushOrRevealChat(
+          context,
+          chatRouteName(status.userId!),
+          (_) => ChatThreadScreen(peerUserId: status.userId, peerName: c.name),
+        );
       } else {
         await _invite();
       }
