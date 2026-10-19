@@ -6,7 +6,12 @@ import 'package:dio/dio.dart';
 class MediaRepository {
   final ApiController _api = ApiController.instance;
 
-  Future<String> uploadImage(String filePath) async {
+  Future<String> uploadImage(String filePath) => _upload(filePath);
+
+  /// Uploads a recorded voice note (.m4a) and returns its public URL.
+  Future<String> uploadVoice(String filePath) => _upload(filePath);
+
+  Future<String> _upload(String filePath) async {
     final form = FormData.fromMap({
       'file': await MultipartFile.fromFile(filePath),
     });

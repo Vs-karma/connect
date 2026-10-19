@@ -14,6 +14,7 @@ abstract class Message with _$Message {
     String? body,
     String? mediaUrl,
     String? mediaType,
+    @JsonKey(name: 'mediaDurationMs') int? durationMs,
     String? broadcastId,
     String? productId,
     required String status,

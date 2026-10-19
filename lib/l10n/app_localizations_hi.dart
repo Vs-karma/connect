@@ -68,6 +68,34 @@ class AppLocalizationsHi extends AppLocalizations {
       'आपका OTP गोपनीय है। इसे किसी के साथ साझा न करें';
 
   @override
+  String get setUpProfile => 'अपनी प्रोफ़ाइल सेट करें';
+
+  @override
+  String get whatShouldWeCallYou => 'हम आपको किस नाम से बुलाएँ?';
+
+  @override
+  String get yourNameHint => 'आपका नाम';
+
+  @override
+  String get continueLabel => 'जारी रखें';
+
+  @override
+  String get nameRequired => 'कृपया अपना नाम दर्ज करें';
+
+  @override
+  String get nameTooShort => 'नाम कम से कम 2 अक्षरों का होना चाहिए';
+
+  @override
+  String get nameTooLong => 'नाम अधिकतम 30 अक्षरों का हो सकता है';
+
+  @override
+  String get nameInvalidChars =>
+      'केवल अक्षर, संख्याएँ, स्पेस और . _ - \' की अनुमति है';
+
+  @override
+  String get nameInvalidStart => 'नाम अक्षर या संख्या से शुरू होना चाहिए';
+
+  @override
   String get secureCommunication => 'सुरक्षित संचार';
 
   @override
@@ -517,6 +545,23 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get logout => 'लॉगआउट';
+
+  @override
+  String get voiceMessage => 'वॉइस मैसेज';
+
+  @override
+  String get slideToCancel => 'रद्द करने के लिए स्लाइड करें';
+
+  @override
+  String get releaseToCancel => 'रद्द करने के लिए छोड़ें';
+
+  @override
+  String get micPermissionNeeded =>
+      'वॉइस मैसेज रिकॉर्ड करने के लिए माइक्रोफ़ोन अनुमति ज़रूरी है।';
+
+  @override
+  String get recordingTooShort =>
+      'रिकॉर्ड करने के लिए दबाकर रखें, भेजने के लिए छोड़ें';
 
   @override
   String get sendMessage => 'संदेश भेजें';

@@ -121,7 +121,12 @@ class ThreadController extends ChangeNotifier {
   }
 
   /// Optimistically prepend a message, then reconcile with the server response.
-  Future<void> send({String? body, String? mediaUrl, String? mediaType, String? productId}) async {
+  Future<void> send(
+      {String? body,
+      String? mediaUrl,
+      String? mediaType,
+      int? mediaDurationMs,
+      String? productId}) async {
     final me = _ref.read(sessionControllerProvider).value?.id;
     final clientId = _uuid.v4();
     final temp = Message(
@@ -132,6 +137,7 @@ class ThreadController extends ChangeNotifier {
       body: body,
       mediaUrl: mediaUrl,
       mediaType: mediaType,
+      durationMs: mediaDurationMs,
       productId: productId,
       status: 'SENDING',
       createdAt: DateTime.now(),
@@ -139,7 +145,12 @@ class ThreadController extends ChangeNotifier {
     _set([temp, ..._current]);
     try {
       final saved = await _repo.sendMessage(_cid,
-          body: body, mediaUrl: mediaUrl, mediaType: mediaType, productId: productId, clientMessageId: clientId);
+          body: body,
+          mediaUrl: mediaUrl,
+          mediaType: mediaType,
+          mediaDurationMs: mediaDurationMs,
+          productId: productId,
+          clientMessageId: clientId);
       _replace(temp.id, saved);
       _ref.invalidate(chatListProvider);
     } catch (e) {

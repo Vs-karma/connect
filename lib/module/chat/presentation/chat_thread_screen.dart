@@ -1,7 +1,11 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:connect/app/app_nav.dart';
 import 'package:connect/module/broadcast/data/broadcast_message.dart';
+import 'package:connect/module/chat/presentation/widgets/voice_bubble.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:record/record.dart';
 import 'package:connect/module/broadcast/presentation/widgets/attach_sheet.dart';
 import 'package:connect/module/broadcast/presentation/widgets/message_bubble.dart';
 import 'package:connect/module/catalog/presentation/widgets/product_card.dart';
@@ -53,12 +57,24 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   bool _sending = false;
   String? _cid;
 
+  // Voice recording
+  final _recorder = AudioRecorder();
+  bool _isRecording = false;
+  bool _lockedRecording = false;
+  bool _willCancel = false;
+  bool _hasText = false;
+  Duration _recordElapsed = Duration.zero;
+  Timer? _recordTimer;
+  String? _recordPath;
+  static const _maxRecord = Duration(minutes: 2);
+
   @override
   void initState() {
     super.initState();
     _cid = widget.conversationId;
     if (_cid != null) ActiveChat.instance.enter(_cid!);
     _scroll.addListener(_onScroll);
+    _msgController.addListener(_onTextChanged);
     if (widget.initialShareProductId != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _shareInitialProduct());
     }
@@ -83,9 +99,16 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   @override
   void dispose() {
     if (_cid != null) ActiveChat.instance.leave(_cid!);
+    _recordTimer?.cancel();
+    _recorder.dispose();
     _scroll.dispose();
     _msgController.dispose();
     super.dispose();
+  }
+
+  void _onTextChanged() {
+    final has = _msgController.text.trim().isNotEmpty;
+    if (has != _hasText) setState(() => _hasText = has);
   }
 
   ThreadController? get _controller =>
@@ -133,6 +156,134 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
     } finally {
       if (mounted) setState(() => _sending = false);
     }
+  }
+
+  // ---- Voice recording ----
+
+  Future<void> _startRecording() async {
+    if (_isRecording || _sending) return;
+    try {
+      if (!await _recorder.hasPermission()) {
+        if (mounted) ScaffoldToast.showErrorBottom(context, context.l10n.micPermissionNeeded);
+        return;
+      }
+      final dir = await getTemporaryDirectory();
+      final path = '${dir.path}/voice_${DateTime.now().millisecondsSinceEpoch}.m4a';
+      await _recorder.start(const RecordConfig(encoder: AudioEncoder.aacLc), path: path);
+      _recordPath = path;
+      setState(() {
+        _isRecording = true;
+        _lockedRecording = false;
+        _willCancel = false;
+        _recordElapsed = Duration.zero;
+      });
+      _recordTimer = Timer.periodic(const Duration(milliseconds: 200), (_) {
+        setState(() => _recordElapsed += const Duration(milliseconds: 200));
+        if (_recordElapsed >= _maxRecord) _stopAndSend();
+      });
+    } catch (_) {
+      if (mounted) ScaffoldToast.showErrorBottom(context, context.l10n.somethingWentWrong);
+      _resetRecording();
+    }
+  }
+
+  void _onRecordDrag(LongPressMoveUpdateDetails d) {
+    if (!_isRecording || _lockedRecording) return;
+    final dx = d.offsetFromOrigin.dx;
+    final dy = d.offsetFromOrigin.dy;
+    if (dy < -80) {
+      setState(() => _lockedRecording = true); // slide up to lock hands-free
+      return;
+    }
+    final cancel = dx < -90;
+    if (cancel != _willCancel) setState(() => _willCancel = cancel);
+  }
+
+  void _onRecordRelease() {
+    if (!_isRecording || _lockedRecording) return; // locked mode ends via buttons
+    if (_willCancel) {
+      _cancelRecording();
+    } else {
+      _stopAndSend();
+    }
+  }
+
+  Future<void> _cancelRecording() async {
+    _recordTimer?.cancel();
+    try {
+      await _recorder.stop();
+    } catch (_) {}
+    _deleteRecordFile();
+    _resetRecording();
+  }
+
+  Future<void> _stopAndSend() async {
+    _recordTimer?.cancel();
+    final elapsed = _recordElapsed;
+    String? path;
+    try {
+      path = await _recorder.stop();
+    } catch (_) {}
+    final wasRecording = _isRecording;
+    _resetRecording();
+    if (!wasRecording || path == null) return;
+
+    // Guard against accidental taps.
+    if (elapsed < const Duration(seconds: 1)) {
+      _deleteRecordFile(path);
+      if (mounted) ScaffoldToast.showErrorBottom(context, context.l10n.recordingTooShort);
+      return;
+    }
+
+    setState(() => _sending = true);
+    try {
+      final url = await _media.uploadVoice(path);
+      final durMs = elapsed.inMilliseconds;
+      if (_cid == null) {
+        final msg = await ref.read(chatRepositoryProvider).startChat(
+              widget.peerUserId!,
+              mediaUrl: url,
+              mediaType: 'AUDIO',
+              mediaDurationMs: durMs,
+            );
+        ref.invalidate(chatListProvider);
+        ActiveChat.instance.enter(msg.conversationId);
+        if (mounted) setState(() => _cid = msg.conversationId);
+      } else {
+        await _controller!.send(mediaUrl: url, mediaType: 'AUDIO', mediaDurationMs: durMs);
+      }
+    } catch (_) {
+      if (mounted) ScaffoldToast.showErrorBottom(context, 'Could not send. Try again.');
+    } finally {
+      _deleteRecordFile(path);
+      if (mounted) setState(() => _sending = false);
+    }
+  }
+
+  void _deleteRecordFile([String? path]) {
+    final p = path ?? _recordPath;
+    if (p == null) return;
+    try {
+      final f = File(p);
+      if (f.existsSync()) f.deleteSync();
+    } catch (_) {}
+  }
+
+  void _resetRecording() {
+    if (!mounted) return;
+    setState(() {
+      _isRecording = false;
+      _lockedRecording = false;
+      _willCancel = false;
+      _recordElapsed = Duration.zero;
+      _recordPath = null;
+    });
+  }
+
+  String _fmtElapsed(Duration d) {
+    final m = d.inMinutes.remainder(60).toString();
+    final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return '$m:$s';
   }
 
   Future<void> _onLongPress(Message m) async {
@@ -324,6 +475,25 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                     ),
                   );
                 }
+                if (m.mediaType == 'AUDIO' && m.mediaUrl != null && !m.deleted) {
+                  return Align(
+                    alignment: m.mine ? Alignment.centerRight : Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 12.h),
+                      child: GestureDetector(
+                        onLongPress: () => _onLongPress(m),
+                        child: VoiceBubble(
+                          messageId: m.id,
+                          url: m.mediaUrl!,
+                          durationMs: m.durationMs,
+                          mine: m.mine,
+                          uploading: m.status == 'SENDING',
+                          failed: m.status == 'FAILED',
+                        ),
+                      ),
+                    ),
+                  );
+                }
                 return GestureDetector(
                   onLongPress: () => _onLongPress(m),
                   child: MessageBubble(message: _toBubble(m)),
@@ -366,6 +536,25 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
   }
 
   Widget _composer(l10n) {
+    // The recording bar is an OVERLAY, not a replacement: the mic GestureDetector
+    // below must stay mounted for the whole press or move/release callbacks are lost.
+    // IgnorePointer lets the underlying detector keep tracking until the user locks.
+    return Stack(
+      children: [
+        _inputRow(l10n),
+        if (_isRecording)
+          Positioned.fill(
+            child: IgnorePointer(
+              ignoring: !_lockedRecording,
+              child: _recordingBar(l10n),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _inputRow(l10n) {
+    final showSend = _hasText || _pendingImage != null;
     return Padding(
       padding: EdgeInsets.fromLTRB(16.w, 6.h, 16.w, 10.h),
       child: Container(
@@ -397,12 +586,82 @@ class _ChatThreadScreenState extends ConsumerState<ChatThreadScreen> {
                 ),
               ),
             ),
-            IconButton(
-              icon: _sending
-                  ? SizedBox(width: 18.w, height: 18.w, child: const CircularProgressIndicator(strokeWidth: 2))
-                  : Icon(Icons.send, color: AppColors.primary, size: 22.sp),
-              onPressed: _sending ? null : _send,
+            if (_sending)
+              Padding(
+                padding: EdgeInsets.all(10.w),
+                child: SizedBox(
+                    width: 18.w, height: 18.w, child: const CircularProgressIndicator(strokeWidth: 2)),
+              )
+            else if (showSend)
+              IconButton(
+                icon: Icon(Icons.send, color: AppColors.primary, size: 22.sp),
+                onPressed: _send,
+              )
+            else
+              GestureDetector(
+                onLongPressStart: (_) => _startRecording(),
+                onLongPressMoveUpdate: _onRecordDrag,
+                onLongPressEnd: (_) => _onRecordRelease(),
+                onTap: () =>
+                    ScaffoldToast.showSuccessBottom(context, l10n.recordingTooShort),
+                child: Padding(
+                  padding: EdgeInsets.all(10.w),
+                  child: Icon(Icons.mic, color: AppColors.primary, size: 24.sp),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Replaces the composer while recording: live timer + cancel + (locked) send.
+  Widget _recordingBar(l10n) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(16.w, 6.h, 16.w, 10.h),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.card,
+          borderRadius: BorderRadius.circular(30.r),
+          border: Border.all(color: _willCancel ? AppColors.danger : AppColors.border),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 10.h),
+        child: Row(
+          children: [
+            Icon(Icons.fiber_manual_record, color: AppColors.danger, size: 14.sp),
+            SizedBox(width: 8.w),
+            Text(_fmtElapsed(_recordElapsed),
+                style: AppTextStyles.style14px.w600.copyWith(color: AppColors.textPrimary)),
+            SizedBox(width: 14.w),
+            Expanded(
+              child: Text(
+                _willCancel
+                    ? l10n.releaseToCancel
+                    : (_lockedRecording ? l10n.voiceMessage : '‹ ${l10n.slideToCancel}'),
+                style: AppTextStyles.style13px.w500.copyWith(
+                    color: _willCancel ? AppColors.danger : AppColors.textSecondary),
+              ),
             ),
+            if (_lockedRecording) ...[
+              GestureDetector(
+                onTap: _cancelRecording,
+                child: Padding(
+                  padding: EdgeInsets.all(6.w),
+                  child: Icon(Icons.delete_outline, color: AppColors.danger, size: 24.sp),
+                ),
+              ),
+              SizedBox(width: 6.w),
+              GestureDetector(
+                onTap: _stopAndSend,
+                child: Container(
+                  width: 38.w,
+                  height: 38.w,
+                  decoration: BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+                  child: Icon(Icons.send, color: AppColors.onPrimary, size: 20.sp),
+                ),
+              ),
+            ] else
+              Icon(Icons.mic, color: AppColors.primary, size: 24.sp),
           ],
         ),
       ),

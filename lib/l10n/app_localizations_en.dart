@@ -68,6 +68,34 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your OTP is confidential. Don\'t share it with anyone';
 
   @override
+  String get setUpProfile => 'Set up your profile';
+
+  @override
+  String get whatShouldWeCallYou => 'What should we call you?';
+
+  @override
+  String get yourNameHint => 'Your name';
+
+  @override
+  String get continueLabel => 'Continue';
+
+  @override
+  String get nameRequired => 'Please enter your name';
+
+  @override
+  String get nameTooShort => 'Name must be at least 2 characters';
+
+  @override
+  String get nameTooLong => 'Name can be at most 30 characters';
+
+  @override
+  String get nameInvalidChars =>
+      'Only letters, numbers, spaces and . _ - \' are allowed';
+
+  @override
+  String get nameInvalidStart => 'Name must start with a letter or number';
+
+  @override
   String get secureCommunication => 'Secure Communication';
 
   @override
@@ -516,6 +544,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logout => 'Logout';
+
+  @override
+  String get voiceMessage => 'Voice message';
+
+  @override
+  String get slideToCancel => 'Slide to cancel';
+
+  @override
+  String get releaseToCancel => 'Release to cancel';
+
+  @override
+  String get micPermissionNeeded =>
+      'Microphone permission is needed to record voice messages.';
+
+  @override
+  String get recordingTooShort => 'Hold to record, release to send';
 
   @override
   String get sendMessage => 'Send Message';

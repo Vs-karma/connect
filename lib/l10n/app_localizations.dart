@@ -206,6 +206,60 @@ abstract class AppLocalizations {
   /// **'Your OTP is confidential. Don\'t share it with anyone'**
   String get otpConfidential;
 
+  /// No description provided for @setUpProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up your profile'**
+  String get setUpProfile;
+
+  /// No description provided for @whatShouldWeCallYou.
+  ///
+  /// In en, this message translates to:
+  /// **'What should we call you?'**
+  String get whatShouldWeCallYou;
+
+  /// No description provided for @yourNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get yourNameHint;
+
+  /// No description provided for @continueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueLabel;
+
+  /// No description provided for @nameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get nameRequired;
+
+  /// No description provided for @nameTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be at least 2 characters'**
+  String get nameTooShort;
+
+  /// No description provided for @nameTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Name can be at most 30 characters'**
+  String get nameTooLong;
+
+  /// No description provided for @nameInvalidChars.
+  ///
+  /// In en, this message translates to:
+  /// **'Only letters, numbers, spaces and . _ - \' are allowed'**
+  String get nameInvalidChars;
+
+  /// No description provided for @nameInvalidStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must start with a letter or number'**
+  String get nameInvalidStart;
+
   /// No description provided for @secureCommunication.
   ///
   /// In en, this message translates to:
@@ -1069,6 +1123,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logout'**
   String get logout;
+
+  /// No description provided for @voiceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice message'**
+  String get voiceMessage;
+
+  /// No description provided for @slideToCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Slide to cancel'**
+  String get slideToCancel;
+
+  /// No description provided for @releaseToCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Release to cancel'**
+  String get releaseToCancel;
+
+  /// No description provided for @micPermissionNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone permission is needed to record voice messages.'**
+  String get micPermissionNeeded;
+
+  /// No description provided for @recordingTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold to record, release to send'**
+  String get recordingTooShort;
 
   /// No description provided for @sendMessage.
   ///

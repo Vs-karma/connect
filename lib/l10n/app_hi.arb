@@ -183,6 +183,11 @@
   "changeLanguage": "भाषा बदलें",
   "logout": "लॉगआउट",
 
+  "voiceMessage": "वॉइस मैसेज",
+  "slideToCancel": "रद्द करने के लिए स्लाइड करें",
+  "releaseToCancel": "रद्द करने के लिए छोड़ें",
+  "micPermissionNeeded": "वॉइस मैसेज रिकॉर्ड करने के लिए माइक्रोफ़ोन अनुमति ज़रूरी है।",
+  "recordingTooShort": "रिकॉर्ड करने के लिए दबाकर रखें, भेजने के लिए छोड़ें",
   "sendMessage": "संदेश भेजें",
   "delete": "हटाएं",
   "editName": "नाम बदलें",

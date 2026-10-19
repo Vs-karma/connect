@@ -57,6 +57,8 @@
 	<string>Mitra uses your photo library to attach images to your broadcasts.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Mitra uses Face ID to lock the app for your security.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Connect uses the microphone to record voice messages you send in chats.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

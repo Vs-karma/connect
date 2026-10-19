@@ -214,6 +214,11 @@
   "changeLanguage": "Change Language",
   "logout": "Logout",
 
+  "voiceMessage": "Voice message",
+  "slideToCancel": "Slide to cancel",
+  "releaseToCancel": "Release to cancel",
+  "micPermissionNeeded": "Microphone permission is needed to record voice messages.",
+  "recordingTooShort": "Hold to record, release to send",
   "sendMessage": "Send Message",
   "delete": "Delete",
   "editName": "Edit Name",

@@ -34,12 +34,13 @@ class ChatRepository {
     String? body,
     String? mediaUrl,
     String? mediaType,
+    int? mediaDurationMs,
     String? productId,
     String? clientMessageId,
   }) async {
     final res = await _api.post(
       EndPoints.startChatWith(otherUserId),
-      body: _messageBody(body, mediaUrl, mediaType, productId, clientMessageId),
+      body: _messageBody(body, mediaUrl, mediaType, mediaDurationMs, productId, clientMessageId),
     );
     return Message.fromJson(res.data as Map<String, dynamic>);
   }
@@ -50,12 +51,13 @@ class ChatRepository {
     String? body,
     String? mediaUrl,
     String? mediaType,
+    int? mediaDurationMs,
     String? productId,
     String? clientMessageId,
   }) async {
     final res = await _api.post(
       EndPoints.conversationMessages(conversationId),
-      body: _messageBody(body, mediaUrl, mediaType, productId, clientMessageId),
+      body: _messageBody(body, mediaUrl, mediaType, mediaDurationMs, productId, clientMessageId),
     );
     return Message.fromJson(res.data as Map<String, dynamic>);
   }
@@ -85,12 +87,13 @@ class ChatRepository {
     await _api.post(EndPoints.conversationUnblock(conversationId));
   }
 
-  Map<String, dynamic> _messageBody(
-      String? body, String? mediaUrl, String? mediaType, String? productId, String? clientMessageId) {
+  Map<String, dynamic> _messageBody(String? body, String? mediaUrl, String? mediaType,
+      int? mediaDurationMs, String? productId, String? clientMessageId) {
     return {
       if (body != null && body.isNotEmpty) 'body': body,
       if (mediaUrl != null && mediaUrl.isNotEmpty) 'mediaUrl': mediaUrl,
       if (mediaType != null && mediaType.isNotEmpty) 'mediaType': mediaType,
+      if (mediaDurationMs != null) 'mediaDurationMs': mediaDurationMs,
       if (productId != null && productId.isNotEmpty) 'productId': productId,
       if (clientMessageId != null) 'clientMessageId': clientMessageId,
     };
