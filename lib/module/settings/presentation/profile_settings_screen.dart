@@ -5,6 +5,7 @@ import 'package:connect/module/broadcast/presentation/broadcast_history_screen.d
 import 'package:connect/module/catalog/presentation/my_store_screen.dart';
 import 'package:connect/module/profile/application/profile_providers.dart';
 import 'package:connect/module/settings/application/settings_controller.dart';
+import 'package:connect/module/settings/presentation/delete_account_screen.dart';
 import 'package:connect/res/app_colors.dart';
 import 'package:connect/res/text_style.dart';
 import 'package:connect/services/lock_service.dart';
@@ -137,7 +138,17 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen>
                 ),
               ),
             ),
-            SizedBox(height: 10.h),
+            SizedBox(height: 18.h),
+            Center(
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const DeleteAccountScreen()),
+                ),
+                child: Text(l10n.deleteAccount,
+                    style: AppTextStyles.style14px.w600.copyWith(color: AppColors.danger)),
+              ),
+            ),
+            SizedBox(height: 12.h),
             Center(
               child: Text('v 1.0.0 (1)',
                   style: AppTextStyles.style12px.w500.copyWith(color: AppColors.textSecondary)),

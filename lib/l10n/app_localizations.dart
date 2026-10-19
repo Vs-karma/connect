@@ -1124,6 +1124,96 @@ abstract class AppLocalizations {
   /// **'Logout'**
   String get logout;
 
+  /// No description provided for @deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteAccountReasonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you leaving?'**
+  String get deleteAccountReasonTitle;
+
+  /// No description provided for @deleteAccountReasonSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your feedback helps us improve. This is optional.'**
+  String get deleteAccountReasonSubtitle;
+
+  /// No description provided for @deleteAccountDetailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us more (optional)'**
+  String get deleteAccountDetailHint;
+
+  /// No description provided for @reasonNotUsing.
+  ///
+  /// In en, this message translates to:
+  /// **'I don\'t use it anymore'**
+  String get reasonNotUsing;
+
+  /// No description provided for @reasonFoundBetter.
+  ///
+  /// In en, this message translates to:
+  /// **'I found a better app'**
+  String get reasonFoundBetter;
+
+  /// No description provided for @reasonPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy concerns'**
+  String get reasonPrivacy;
+
+  /// No description provided for @reasonTooManyNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many notifications'**
+  String get reasonTooManyNotifications;
+
+  /// No description provided for @reasonAnotherAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'I have another account'**
+  String get reasonAnotherAccount;
+
+  /// No description provided for @reasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get reasonOther;
+
+  /// No description provided for @deleteAccountConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your account?'**
+  String get deleteAccountConfirmTitle;
+
+  /// No description provided for @deleteAccountConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes your account, chats, and store. This can\'t be undone.'**
+  String get deleteAccountConfirmBody;
+
+  /// No description provided for @couldNotDeleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete account. Please try again.'**
+  String get couldNotDeleteAccount;
+
+  /// No description provided for @selectReasonError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a reason to continue.'**
+  String get selectReasonError;
+
+  /// No description provided for @tellUsMoreError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please tell us a bit more.'**
+  String get tellUsMoreError;
+
   /// No description provided for @voiceMessage.
   ///
   /// In en, this message translates to:

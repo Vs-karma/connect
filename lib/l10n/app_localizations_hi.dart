@@ -547,6 +547,54 @@ class AppLocalizationsHi extends AppLocalizations {
   String get logout => 'लॉगआउट';
 
   @override
+  String get deleteAccount => 'खाता हटाएँ';
+
+  @override
+  String get deleteAccountReasonTitle => 'आप क्यों जा रहे हैं?';
+
+  @override
+  String get deleteAccountReasonSubtitle =>
+      'आपकी राय हमें बेहतर बनने में मदद करती है। यह वैकल्पिक है।';
+
+  @override
+  String get deleteAccountDetailHint => 'और बताएँ (वैकल्पिक)';
+
+  @override
+  String get reasonNotUsing => 'मैं अब इसका उपयोग नहीं करता';
+
+  @override
+  String get reasonFoundBetter => 'मुझे एक बेहतर ऐप मिल गया';
+
+  @override
+  String get reasonPrivacy => 'गोपनीयता की चिंता';
+
+  @override
+  String get reasonTooManyNotifications => 'बहुत ज़्यादा सूचनाएँ';
+
+  @override
+  String get reasonAnotherAccount => 'मेरे पास दूसरा खाता है';
+
+  @override
+  String get reasonOther => 'अन्य';
+
+  @override
+  String get deleteAccountConfirmTitle => 'अपना खाता हटाएँ?';
+
+  @override
+  String get deleteAccountConfirmBody =>
+      'इससे आपका खाता, चैट और दुकान स्थायी रूप से हट जाएँगे। इसे वापस नहीं किया जा सकता।';
+
+  @override
+  String get couldNotDeleteAccount =>
+      'खाता नहीं हटाया जा सका। कृपया पुनः प्रयास करें।';
+
+  @override
+  String get selectReasonError => 'जारी रखने के लिए कृपया एक कारण चुनें।';
+
+  @override
+  String get tellUsMoreError => 'कृपया थोड़ा और बताएँ।';
+
+  @override
   String get voiceMessage => 'वॉइस मैसेज';
 
   @override

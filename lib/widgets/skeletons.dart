@@ -139,6 +139,48 @@ class StoreCardListSkeleton extends StatelessWidget {
   }
 }
 
+/// Borderless store feed placeholder (Store tab): rounded cover + details below.
+class StoreFeedSkeleton extends StatelessWidget {
+  final int count;
+
+  const StoreFeedSkeleton({super.key, this.count = 4});
+
+  @override
+  Widget build(BuildContext context) {
+    return Skeleton(
+      child: ListView.builder(
+        padding: EdgeInsets.fromLTRB(16.w, 4.h, 16.w, 20.h),
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: count,
+        itemBuilder: (_, __) => Padding(
+          padding: EdgeInsets.only(bottom: 24.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SkeletonBox(width: double.infinity, height: 158.h, radius: 16),
+              SizedBox(height: 11.h),
+              Row(
+                children: [
+                  SkeletonBox(width: 38.w, height: 38.w, radius: 11),
+                  SizedBox(width: 11.w),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SkeletonBox(width: 140.w, height: 13.h, radius: 6),
+                      SizedBox(height: 7.h),
+                      SkeletonBox(width: 90.w, height: 11.h, radius: 6),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Product list placeholder (My Store): thumbnail + two lines rows.
 class ProductListSkeleton extends StatelessWidget {
   final int count;

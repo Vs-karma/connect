@@ -546,6 +546,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logout => 'Logout';
 
   @override
+  String get deleteAccount => 'Delete account';
+
+  @override
+  String get deleteAccountReasonTitle => 'Why are you leaving?';
+
+  @override
+  String get deleteAccountReasonSubtitle =>
+      'Your feedback helps us improve. This is optional.';
+
+  @override
+  String get deleteAccountDetailHint => 'Tell us more (optional)';
+
+  @override
+  String get reasonNotUsing => 'I don\'t use it anymore';
+
+  @override
+  String get reasonFoundBetter => 'I found a better app';
+
+  @override
+  String get reasonPrivacy => 'Privacy concerns';
+
+  @override
+  String get reasonTooManyNotifications => 'Too many notifications';
+
+  @override
+  String get reasonAnotherAccount => 'I have another account';
+
+  @override
+  String get reasonOther => 'Other';
+
+  @override
+  String get deleteAccountConfirmTitle => 'Delete your account?';
+
+  @override
+  String get deleteAccountConfirmBody =>
+      'This permanently deletes your account, chats, and store. This can\'t be undone.';
+
+  @override
+  String get couldNotDeleteAccount =>
+      'Could not delete account. Please try again.';
+
+  @override
+  String get selectReasonError => 'Please select a reason to continue.';
+
+  @override
+  String get tellUsMoreError => 'Please tell us a bit more.';
+
+  @override
   String get voiceMessage => 'Voice message';
 
   @override
