@@ -18,6 +18,18 @@ class AppLocalizationsHi extends AppLocalizations {
   String get connections => 'कनेक्शन';
 
   @override
+  String get notifNudgePrefix => 'रियल-टाइम चैट अनुभव के लिए ';
+
+  @override
+  String get notifNudgeKeyword => 'सूचनाएँ';
+
+  @override
+  String get notifNudgeSuffix => ' चालू करें।';
+
+  @override
+  String get enableNotifs => 'चालू करें';
+
+  @override
   String get noConnectionsYet => 'अभी तक कोई कनेक्शन नहीं';
 
   @override
@@ -303,6 +315,19 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get couldNotLoadStore => 'दुकान लोड नहीं हो सकी।';
+
+  @override
+  String get deleteStore => 'दुकान हटाएँ';
+
+  @override
+  String get deleteStoreConfirm =>
+      'अपनी दुकान हटाएँ? इससे आपकी दुकान, सभी उत्पाद और संग्रह स्थायी रूप से हट जाएँगे। इसे वापस नहीं किया जा सकता।';
+
+  @override
+  String get storeDeleted => 'दुकान हटाई गई';
+
+  @override
+  String get couldNotDeleteStore => 'दुकान नहीं हटाई जा सकी। पुनः प्रयास करें।';
 
   @override
   String get catFashion => 'फ़ैशन';

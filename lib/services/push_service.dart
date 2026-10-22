@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:connect/module/chat/presentation/chat_thread_screen.dart';
-import 'package:connect/res/keys.dart';
 import 'package:connect/services/active_chat.dart';
+import 'package:connect/services/pending_chat.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -102,15 +101,12 @@ class PushService {
     } catch (_) {}
   }
 
-  /// Open the conversation for a tapped MESSAGE notification.
+  /// Queue the conversation for a tapped MESSAGE notification. MainShell opens it
+  /// once the app is signed in and ready (avoids a cold-start load failure).
   void _route(Map<String, dynamic> data, String? title) {
     if (data['type'] != 'MESSAGE') return;
     final cid = data['conversationId'] as String?;
     if (cid == null || cid.isEmpty) return;
-    navigatorKey.currentState?.push(
-      MaterialPageRoute(
-        builder: (_) => ChatThreadScreen(conversationId: cid, peerName: title ?? 'Chat'),
-      ),
-    );
+    PendingChat.set(cid, title);
   }
 }

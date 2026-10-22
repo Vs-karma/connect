@@ -18,6 +18,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get connections => 'Connections';
 
   @override
+  String get notifNudgePrefix => 'Turn on ';
+
+  @override
+  String get notifNudgeKeyword => 'notifications';
+
+  @override
+  String get notifNudgeSuffix => ' for a real-time chat experience.';
+
+  @override
+  String get enableNotifs => 'Enable';
+
+  @override
   String get noConnectionsYet => 'No connections yet';
 
   @override
@@ -303,6 +315,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get couldNotLoadStore => 'Could not load store.';
+
+  @override
+  String get deleteStore => 'Delete store';
+
+  @override
+  String get deleteStoreConfirm =>
+      'Delete your store? This permanently removes your store, all products and collections. This can\'t be undone.';
+
+  @override
+  String get storeDeleted => 'Store deleted';
+
+  @override
+  String get couldNotDeleteStore => 'Could not delete store. Try again.';
 
   @override
   String get catFashion => 'Fashion';

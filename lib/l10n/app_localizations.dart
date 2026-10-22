@@ -116,6 +116,30 @@ abstract class AppLocalizations {
   /// **'Connections'**
   String get connections;
 
+  /// No description provided for @notifNudgePrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on '**
+  String get notifNudgePrefix;
+
+  /// No description provided for @notifNudgeKeyword.
+  ///
+  /// In en, this message translates to:
+  /// **'notifications'**
+  String get notifNudgeKeyword;
+
+  /// No description provided for @notifNudgeSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **' for a real-time chat experience.'**
+  String get notifNudgeSuffix;
+
+  /// No description provided for @enableNotifs.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable'**
+  String get enableNotifs;
+
   /// No description provided for @noConnectionsYet.
   ///
   /// In en, this message translates to:
@@ -661,6 +685,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not load store.'**
   String get couldNotLoadStore;
+
+  /// No description provided for @deleteStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete store'**
+  String get deleteStore;
+
+  /// No description provided for @deleteStoreConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete your store? This permanently removes your store, all products and collections. This can\'t be undone.'**
+  String get deleteStoreConfirm;
+
+  /// No description provided for @storeDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Store deleted'**
+  String get storeDeleted;
+
+  /// No description provided for @couldNotDeleteStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete store. Try again.'**
+  String get couldNotDeleteStore;
 
   /// No description provided for @catFashion.
   ///

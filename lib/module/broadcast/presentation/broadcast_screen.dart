@@ -11,6 +11,7 @@ import 'package:connect/widgets/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 /// Home = the user's chat list (WhatsApp-style). Tapping a row opens the thread.
 class BroadcastScreen extends ConsumerStatefulWidget {
@@ -20,8 +21,44 @@ class BroadcastScreen extends ConsumerStatefulWidget {
   ConsumerState<BroadcastScreen> createState() => _BroadcastScreenState();
 }
 
-class _BroadcastScreenState extends ConsumerState<BroadcastScreen> {
+class _BroadcastScreenState extends ConsumerState<BroadcastScreen> with WidgetsBindingObserver {
   String _query = '';
+  bool _notifGranted = true; // assume granted until checked, to avoid a flash
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _checkNotifPermission();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Re-check when returning from system/app settings so the banner disappears
+    // the moment notifications are turned on.
+    if (state == AppLifecycleState.resumed) _checkNotifPermission();
+  }
+
+  Future<void> _checkNotifPermission() async {
+    final granted = await Permission.notification.isGranted;
+    if (mounted && granted != _notifGranted) {
+      setState(() => _notifGranted = granted);
+    }
+  }
+
+  Future<void> _enableNotifications() async {
+    final status = await Permission.notification.request();
+    if (status.isPermanentlyDenied || status.isRestricted) {
+      await openAppSettings(); // user blocked it before — send them to settings
+    }
+    await _checkNotifPermission();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +78,7 @@ class _BroadcastScreenState extends ConsumerState<BroadcastScreen> {
                 onChanged: (v) => setState(() => _query = v),
               ),
             ),
+            if (!_notifGranted) _notifBanner(l10n),
             Expanded(
               child: chats.when(
                 loading: () => const ChatListSkeleton(),
@@ -81,6 +119,80 @@ class _BroadcastScreenState extends ConsumerState<BroadcastScreen> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  /// Persistent reminder (no dismiss): without notifications there's no realtime
+  /// delivery, so it stays until the user turns them on.
+  Widget _notifBanner(l10n) {
+    final tint = AppColors.primary.withValues(alpha: 0.10);
+    return Padding(
+      padding: EdgeInsets.fromLTRB(20.w, 2.h, 20.w, 8.h),
+      child: InkWell(
+        onTap: _enableNotifications,
+        borderRadius: BorderRadius.circular(16.r),
+        child: Container(
+          padding: EdgeInsets.all(12.w),
+          decoration: BoxDecoration(color: tint, borderRadius: BorderRadius.circular(16.r)),
+          child: Row(
+            children: [
+              // Bell doodle with a little "missed alert" dot.
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    width: 44.w,
+                    height: 44.w,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(color: AppColors.card, borderRadius: BorderRadius.circular(13.r)),
+                    child: Icon(Icons.notifications_active_outlined,
+                        color: AppColors.primary, size: 24.sp),
+                  ),
+                  Positioned(
+                    right: 6.w,
+                    top: 6.h,
+                    child: Container(
+                      width: 9.w,
+                      height: 9.w,
+                      decoration: BoxDecoration(
+                        color: AppColors.danger,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.card, width: 1.5),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                          text: l10n.notifNudgePrefix,
+                          style: AppTextStyles.style13px.w500.copyWith(color: AppColors.textPrimary)),
+                      TextSpan(
+                          text: l10n.notifNudgeKeyword,
+                          style: AppTextStyles.style13px.w700.copyWith(color: AppColors.primary)),
+                      TextSpan(
+                          text: l10n.notifNudgeSuffix,
+                          style: AppTextStyles.style13px.w500.copyWith(color: AppColors.textPrimary)),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
+                decoration: BoxDecoration(
+                    color: AppColors.primary, borderRadius: BorderRadius.circular(10.r)),
+                child: Text(l10n.enableNotifs,
+                    style: AppTextStyles.style12px.w700.copyWith(color: AppColors.onPrimary)),
+              ),
+            ],
+          ),
         ),
       ),
     );

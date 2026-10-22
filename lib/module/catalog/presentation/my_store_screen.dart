@@ -14,6 +14,7 @@ import 'package:connect/utility/app_toast.dart';
 import 'package:connect/utility/l10n_extension.dart';
 import 'package:connect/widgets/app_bar.dart';
 import 'package:connect/widgets/app_button.dart';
+import 'package:connect/widgets/image_viewer.dart';
 import 'package:connect/widgets/skeletons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -110,6 +111,20 @@ class _MyStoreScreenState extends ConsumerState<MyStoreScreen> {
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(builder: (_) => StoreSetupScreen(existing: store)),
             ),
+          ),
+          PopupMenuButton<String>(
+            icon: Icon(Icons.more_vert, color: AppColors.textPrimary, size: 22.sp),
+            color: AppColors.card,
+            onSelected: (v) {
+              if (v == 'delete') _confirmDeleteStore(context, ref, l10n);
+            },
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                value: 'delete',
+                child: Text(l10n.deleteStore,
+                    style: AppTextStyles.style14px.w600.copyWith(color: AppColors.danger)),
+              ),
+            ],
           ),
         ],
       ),
@@ -309,22 +324,29 @@ class _MyStoreScreenState extends ConsumerState<MyStoreScreen> {
         decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(14.r)),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10.r),
-              child: p.imageUrls.isEmpty
-                  ? Container(
-                      width: 56.w,
-                      height: 56.w,
-                      color: AppColors.card,
-                      alignment: Alignment.center,
-                      child: Icon(Icons.image_outlined, color: AppColors.border, size: 24.sp))
-                  : CachedNetworkImage(
-                      imageUrl: EndPoints.mediaUrl(p.imageUrls.first),
-                      width: 56.w,
-                      height: 56.w,
-                      fit: BoxFit.cover,
-                      errorWidget: (_, __, ___) => Container(width: 56.w, height: 56.w, color: AppColors.card),
-                    ),
+            GestureDetector(
+              onTap: p.imageUrls.isEmpty
+                  ? null
+                  : () => openImageViewer(
+                      context, CachedNetworkImageProvider(EndPoints.mediaUrl(p.imageUrls.first))),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.r),
+                child: p.imageUrls.isEmpty
+                    ? Container(
+                        width: 56.w,
+                        height: 56.w,
+                        color: AppColors.card,
+                        alignment: Alignment.center,
+                        child: Icon(Icons.image_outlined, color: AppColors.border, size: 24.sp))
+                    : CachedNetworkImage(
+                        imageUrl: EndPoints.mediaUrl(p.imageUrls.first),
+                        width: 56.w,
+                        height: 56.w,
+                        fit: BoxFit.cover,
+                        errorWidget: (_, __, ___) =>
+                            Container(width: 56.w, height: 56.w, color: AppColors.card),
+                      ),
+              ),
             ),
             SizedBox(width: 12.w),
             Expanded(
@@ -418,6 +440,36 @@ class _MyStoreScreenState extends ConsumerState<MyStoreScreen> {
       ref.invalidate(myStoreProvider);
     } catch (_) {
       if (context.mounted) ScaffoldToast.showErrorBottom(context, context.l10n.couldNotSaveProduct);
+    }
+  }
+
+  Future<void> _confirmDeleteStore(BuildContext context, WidgetRef ref, l10n) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.card,
+        title: Text(l10n.deleteStore, style: AppTextStyles.style16px.w700),
+        content: Text(l10n.deleteStoreConfirm,
+            style: AppTextStyles.style14px.w500.copyWith(color: AppColors.textSecondary)),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel)),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.deleteStore,
+                style: AppTextStyles.style14px.w700.copyWith(color: AppColors.danger)),
+          ),
+        ],
+      ),
+    );
+    if (ok != true) return;
+    try {
+      await ref.read(catalogRepositoryProvider).deleteStore();
+      ref.invalidate(myStoreProvider);
+      ref.read(myProductsProvider.notifier).reload();
+      ref.invalidate(myCollectionsProvider);
+      if (context.mounted) ScaffoldToast.showSuccessBottom(context, context.l10n.storeDeleted);
+    } catch (_) {
+      if (context.mounted) ScaffoldToast.showErrorBottom(context, context.l10n.couldNotDeleteStore);
     }
   }
 

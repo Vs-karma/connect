@@ -2,9 +2,11 @@ import 'package:connect/module/broadcast/presentation/broadcast_screen.dart';
 import 'package:connect/module/broadcastlist/presentation/broadcast_lists_screen.dart';
 import 'package:connect/module/catalog/presentation/store_browse_screen.dart';
 import 'package:connect/module/chat/application/chat_providers.dart';
+import 'package:connect/module/chat/presentation/chat_thread_screen.dart';
 import 'package:connect/module/contact/presentation/contacts_screen.dart';
 import 'package:connect/module/settings/presentation/profile_settings_screen.dart';
 import 'package:connect/services/notification_controller.dart';
+import 'package:connect/services/pending_chat.dart';
 import 'package:connect/widgets/app_bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,6 +30,33 @@ class _MainShellState extends ConsumerState<MainShell> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(notificationControllerProvider.notifier).syncDevice();
+      _consumePendingChat(); // a notification tapped before the app was ready
+    });
+    // A notification tapped while the app is already running (background → foreground).
+    PendingChat.notifier.addListener(_consumePendingChat);
+  }
+
+  @override
+  void dispose() {
+    PendingChat.notifier.removeListener(_consumePendingChat);
+    super.dispose();
+  }
+
+  void _consumePendingChat() {
+    if (!mounted || PendingChat.notifier.value == null) return;
+    final route = PendingChat.take();
+    if (route == null) return;
+    // Defer a frame so the navigator is ready, then open the thread.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => ChatThreadScreen(
+            conversationId: route.conversationId,
+            peerName: route.title ?? 'Chat',
+          ),
+        ),
+      );
     });
   }
 

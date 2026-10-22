@@ -209,6 +209,7 @@ class _ProductGalleryState extends State<_ProductGallery> {
             itemBuilder: (_, i) {
               final provider = CachedNetworkImageProvider(EndPoints.mediaUrl(widget.images[i]));
               return GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 onTap: () => openImageViewer(context, provider),
                 child: Image(image: provider, fit: BoxFit.cover, width: double.infinity),
               );

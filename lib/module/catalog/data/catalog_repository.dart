@@ -50,6 +50,11 @@ class CatalogRepository {
     return CatalogStore.fromJson(res.data as Map<String, dynamic>);
   }
 
+  /// Permanently delete the caller's store (products, images, collections cascade).
+  Future<void> deleteStore() async {
+    await _api.delete(EndPoints.CATALOG_ME);
+  }
+
   // ---- My products ----
 
   Future<ProductPage> myProducts({int page = 0, int size = 50}) async {
